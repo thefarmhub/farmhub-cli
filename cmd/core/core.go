@@ -13,7 +13,6 @@ var verbose bool
 func NewCommand() *cobra.Command {
 	var rootCmd = &cobra.Command{
 		Use:     "farmhub",
-		Short:   "The loyal and hard working data dog that relays IoT sensor data to the cloud",
 		Version: version.Version,
 		Long: `
  _____                    _   _       _
