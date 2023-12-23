@@ -7,9 +7,6 @@ import (
 	"github.com/thefarmhub/farmhub-cli/internal/version"
 )
 
-var cfgDir string
-var verbose bool
-
 func NewCommand() *cobra.Command {
 	var rootCmd = &cobra.Command{
 		Use:     "farmhub",
