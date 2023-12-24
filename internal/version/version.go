@@ -24,7 +24,7 @@ var Template = fmt.Sprintf("farmhub version %s\n", Version)
 // release of the CLI
 func CheckLatestVersion() {
 	// main is the dev version, we don't want to check against that every time
-	if Version != "main" && Version != "develop" {
+	if Version != "main" {
 		s := ansi.StartNewSpinner("Checking for new versions...", os.Stdout)
 		latest := getLatestVersion()
 
