@@ -16,12 +16,12 @@ func NewFlashCommand() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			selectedPort := mustSelectPort()
-			flash := mustSelectFlasher()
-			flash.SetPort(selectedPort)
-			flash.SetPath(args[0])
+			hardware := mustSelectSensor()
+			hardware.SetPort(selectedPort)
+			hardware.SetPath(args[0])
 
-			spinnerInit, _ := pterm.DefaultSpinner.Start("Initializing configuration...")
-			err := flash.Init()
+			spinnerInit, _ := pterm.DefaultSpinner.Start("Setting up configuration...")
+			err := hardware.Init()
 			if err != nil {
 				spinnerInit.Fail(err.Error())
 				return err
@@ -30,7 +30,7 @@ func NewFlashCommand() *cobra.Command {
 			spinnerInit.Success("Configuration initialized")
 
 			spinnerUpload, _ := pterm.DefaultSpinner.Start("Flashing...")
-			err = flash.Upload()
+			err = hardware.Upload()
 			if err != nil {
 				spinnerUpload.Fail(err.Error())
 				return err
@@ -68,7 +68,7 @@ func mustSelectPort() string {
 	return selectedPort
 }
 
-func mustSelectFlasher() flasher.Flasher {
+func mustSelectSensor() flasher.Flasher {
 	selectedFlasher, err := pterm.DefaultInteractiveSelect.
 		WithDefaultText("Select the sensor: ").
 		WithOptions([]string{"Hydroponics Kit", "Aquaponics Kit"}).
