@@ -1,11 +1,15 @@
 package core
 
 import (
+	log "github.com/sirupsen/logrus"
+
 	"github.com/spf13/cobra"
 	"github.com/thefarmhub/farmhub-cli/cmd/flash"
 	versioncmd "github.com/thefarmhub/farmhub-cli/cmd/version"
 	"github.com/thefarmhub/farmhub-cli/internal/version"
 )
+
+var verbose bool
 
 func NewCommand() *cobra.Command {
 	var rootCmd = &cobra.Command{
@@ -23,8 +27,20 @@ configure and publish your IoT sensor data to your dashboard.
 `,
 	}
 
+	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
+
 	rootCmd.AddCommand(flash.NewFlashCommand())
 	rootCmd.AddCommand(versioncmd.NewVersionCommand())
 
 	return rootCmd
+}
+
+func init() {
+	cobra.OnInitialize(func() {
+		if verbose {
+			log.SetLevel(log.InfoLevel)
+		} else {
+			log.SetLevel(log.WarnLevel)
+		}
+	})
 }
