@@ -42,7 +42,7 @@ func needsToUpgrade(version, latest string) bool {
 
 func getLatestVersion() string {
 	client := github.NewClient(nil)
-	rep, _, err := client.Repositories.GetLatestRelease(context.Background(), "aquaponics-ai", "farmhub-cli-dist")
+	rep, _, err := client.Repositories.GetLatestRelease(context.Background(), "thefarmhub", "farmhub-cli")
 
 	l := log.StandardLogger()
 
