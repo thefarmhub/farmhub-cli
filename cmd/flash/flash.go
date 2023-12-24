@@ -78,8 +78,7 @@ func mustSelectFlasher() flasher.Flasher {
 	}
 
 	switch selectedFlasher {
-	case "Aquaponics Kit":
-	case "Hydroponics Kit":
+	case "Aquaponics Kit", "Hydroponics Kit":
 		return flasher.NewESP32("esp32:esp32:featheresp32")
 	default:
 		pterm.Fatal.Println("Unknown flasher", selectedFlasher)
