@@ -71,14 +71,15 @@ func mustSelectPort() string {
 func mustSelectFlasher() flasher.Flasher {
 	selectedFlasher, err := pterm.DefaultInteractiveSelect.
 		WithDefaultText("Select the sensor: ").
-		WithOptions([]string{"ESP32"}).
+		WithOptions([]string{"Hydroponics Kit", "Aquaponics Kit"}).
 		Show()
 	if err != nil {
 		pterm.Fatal.Println("Error selecting flasher:", err)
 	}
 
 	switch selectedFlasher {
-	case "ESP32":
+	case "Aquaponics Kit":
+	case "Hydroponics Kit":
 		return flasher.NewESP32("esp32:esp32:featheresp32")
 	default:
 		pterm.Fatal.Println("Unknown flasher", selectedFlasher)
