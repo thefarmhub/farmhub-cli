@@ -9,8 +9,8 @@ import (
 	"github.com/arduino/arduino-cli/commands/upload"
 	"github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
-	"github.com/thefarmhub/farmhub-cli/internal/cli/feedback"
-	"github.com/thefarmhub/farmhub-cli/internal/cli/instance"
+	"github.com/thefarmhub/farmhub-cli/internal/arduino/cli/feedback"
+	"github.com/thefarmhub/farmhub-cli/internal/arduino/cli/instance"
 )
 
 type Arduino struct {

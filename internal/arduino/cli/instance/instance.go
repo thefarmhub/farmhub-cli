@@ -20,7 +20,7 @@ import (
 	"github.com/arduino/arduino-cli/i18n"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	"github.com/arduino/go-paths-helper"
-	"github.com/thefarmhub/farmhub-cli/internal/cli/feedback"
+	"github.com/thefarmhub/farmhub-cli/internal/arduino/cli/feedback"
 )
 
 var tr = i18n.Tr
