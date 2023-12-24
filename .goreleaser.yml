@@ -39,7 +39,7 @@ snapshot:
 release:
   github:
     owner: thefarmhub
-    name: farmhub-cli-dist
+    name: farmhub-cli
 
 brews:
   - tap:
