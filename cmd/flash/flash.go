@@ -7,8 +7,6 @@ import (
 	"go.bug.st/serial"
 )
 
-const FBQN = "esp32:esp32:featheresp32"
-
 func NewFlashCommand() *cobra.Command {
 	var cmd = &cobra.Command{
 		Use:   "flash",
