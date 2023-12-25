@@ -44,7 +44,7 @@ release:
 brews:
   - tap:
       owner: thefarmhub
-      name: homebrew-tap
+      name: farmhub-cli
     commit_author:
       name: FarmHub
       email: support@farmhub.ag
@@ -55,7 +55,7 @@ brews:
 scoop:
   bucket:
     owner: thefarmhub
-    name: scoop-farmhub-cli
+    name: farmhub-cli
   commit_author:
     name: FarmHub
     email: support@farmhub.ag
