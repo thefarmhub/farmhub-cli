@@ -25,7 +25,7 @@ jobs:
       - name: Bump version and push tag
         uses: mathieudutour/github-tag-action@v6.1
         with:
-          github_token: ${{ secrets.FARMHUB_BOT_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
