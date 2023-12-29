@@ -7,8 +7,8 @@ import (
 
 type ESP32 struct {
 	arduino *arduino.Arduino
-	path	string
-	port	string
+	path    string
+	port    string
 }
 
 func NewESP32(fbqn string) *ESP32 {
