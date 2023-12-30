@@ -81,8 +81,6 @@ github.com/arduino/go-win32-utils v1.0.0/go.mod h1:0jqM7doGEAs6DaJCxxhLBUDS5Oawr
 github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5 h1:0CwZNZbxp69SHPdPJAN/hZIm0C4OItdklCFmMRWYpio=
 github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5/go.mod h1:wHh0iHkYZB8zMSxRWpUBQtwG5a7fFgvEO+odwuTv2gs=
 github.com/atomicgo/cursor v0.0.1/go.mod h1:cBON2QmmrysudxNBFthvMtN32r3jxVRIvzkUiF/RuIk=
-github.com/briandowns/spinner v1.16.0 h1:DFmp6hEaIx2QXXuqSJmtfSBSAjRmpGiKG6ip2Wm/yOs=
-github.com/briandowns/spinner v1.16.0/go.mod h1:QOuQk7x+EaDASo80FEXwlwiA+j/PPIcX3FScO+3/ZPQ=
 github.com/briandowns/spinner v1.19.0 h1:s8aq38H+Qju89yhp89b4iIiMzMm8YN3p6vGpwyh/a8E=
 github.com/briandowns/spinner v1.19.0/go.mod h1:mQak9GHqbspjC/5iUx3qMlIho8xBS/ppAL/hX5SmPJU=
 github.com/bwesterb/go-ristretto v1.2.3/go.mod h1:fUIoIZaG73pV5biE2Blr2xEzDoMj7NFEuV9ekS419A0=
@@ -357,8 +355,6 @@ github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
-github.com/stripe/stripe-cli v1.7.13 h1:hiRoFRAUdH2bUF2SVb08WjNzS3hN6PpEDauUQb2CviE=
-github.com/stripe/stripe-cli v1.7.13/go.mod h1:GBjAzdM0CK/AHottPypmqESi8FSBMvpkqXRjb9Pko0g=
 github.com/stripe/stripe-cli v1.19.1 h1:flz72s+mcM5WIUn/4CUbjRe5RnpxdctQdt5fGITj2T0=
 github.com/stripe/stripe-cli v1.19.1/go.mod h1:e889+hHsn/JqOcCg3W/q4iMp5UMT+Lp2p9+YQdE9UvM=
 github.com/subosito/gotenv v1.6.0 h1:9NlTDc1FTs4qu0DDq7AEtTPNw6SVm7uBMsUCUjABIf8=

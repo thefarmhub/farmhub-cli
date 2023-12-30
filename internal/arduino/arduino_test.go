@@ -17,7 +17,7 @@ func TestPrepareSketch(t *testing.T) {
 		name          string
 		setup         func() string // function to set up the test environment
 		expectedError bool
-		checkOutput func(output string) error
+		checkOutput   func(output string) error
 	}{
 		{
 			name: "valid directory with .ino file",
@@ -31,7 +31,7 @@ func TestPrepareSketch(t *testing.T) {
 			expectedError: false,
 			checkOutput: func(out string) error {
 				if out != "/valid_sketch" {
-					return errors.New("expected output to be /valid_sketch but received: "+out)
+					return errors.New("expected output to be /valid_sketch but received: " + out)
 				}
 
 				return nil
@@ -63,7 +63,7 @@ func TestPrepareSketch(t *testing.T) {
 				return inoFilePath
 			},
 			expectedError: false,
-			checkOutput: func (out string) error {
+			checkOutput: func(out string) error {
 				matchPattern := `/sketch\d+$`
 
 				r, err := regexp.Compile(matchPattern)

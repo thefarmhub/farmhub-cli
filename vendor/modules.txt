@@ -96,7 +96,7 @@ github.com/arduino/go-timeutils
 # github.com/arduino/go-win32-utils v1.0.0
 ## explicit; go 1.19
 github.com/arduino/go-win32-utils
-# github.com/briandowns/spinner v1.16.0
+# github.com/briandowns/spinner v1.19.0
 ## explicit; go 1.14
 github.com/briandowns/spinner
 # github.com/cloudflare/circl v1.3.3
@@ -376,8 +376,8 @@ github.com/spf13/viper/internal/encoding/yaml
 # github.com/stretchr/testify v1.8.4
 ## explicit; go 1.20
 github.com/stretchr/testify/assert
-# github.com/stripe/stripe-cli v1.7.13
-## explicit; go 1.17
+# github.com/stripe/stripe-cli v1.19.1
+## explicit; go 1.19
 github.com/stripe/stripe-cli/pkg/ansi
 # github.com/subosito/gotenv v1.6.0
 ## explicit; go 1.18
