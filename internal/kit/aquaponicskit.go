@@ -33,12 +33,12 @@ func (e *AquaponicsKit) Init() error {
 	configuration.Settings.Set("board_manager.additional_urls.0", "https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json")
 
 	_, err := e.arduino.PlatformInstall(&rpc.PlatformInstallRequest{
-		Architecture: "esp32",
+		Architecture:    "esp32",
 		PlatformPackage: "esp32",
 	})
 
 	err = e.arduino.InstallLibrary(&rpc.LibraryInstallRequest{
-		Name: "PubSubClient",
+		Name:    "PubSubClient",
 		Version: "2.8.0",
 	})
 	if err != nil {
