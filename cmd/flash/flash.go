@@ -16,10 +16,14 @@ func NewFlashCommand() *cobra.Command {
 			selectedPort := mustSelectPort()
 			hardware := mustSelectKit()
 			hardware.SetPort(selectedPort)
-			hardware.SetPath(args[0])
+
+			err := hardware.SetPath(args[0])
+			if err != nil {
+				return err
+			}
 
 			spinnerInit, _ := pterm.DefaultSpinner.Start("Setting up configuration...")
-			err := hardware.Init()
+			err = hardware.Init()
 			if err != nil {
 				spinnerInit.Fail(err.Error())
 				return err

@@ -64,8 +64,15 @@ func (e *AquaponicsKit) Upload() error {
 	return e.arduino.Upload(e.port, e.path)
 }
 
-func (e *AquaponicsKit) SetPath(path string) {
-	e.path = path
+func (e *AquaponicsKit) SetPath(path string) error {
+	newPath, err := arduino.PrepareSketch(path)
+	if err != nil {
+		return err
+	}
+
+	e.path = newPath
+
+	return nil
 }
 
 func (e *AquaponicsKit) Monitor(ctx context.Context) error {

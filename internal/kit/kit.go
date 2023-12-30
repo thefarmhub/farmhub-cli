@@ -7,7 +7,7 @@ type Kit interface {
 	SetPort(port string)
 
 	// SetPath specifies the path to the sketch to be flashed
-	SetPath(path string)
+	SetPath(path string) error
 
 	// Init initializes the kit, installing libraries and other dependencies
 	Init() error
