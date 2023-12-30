@@ -15,7 +15,7 @@ require (
 	github.com/spf13/afero v1.10.0 // indirect
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.17.0 // indirect
-	github.com/stripe/stripe-cli v1.7.13
+	github.com/stripe/stripe-cli v1.19.1
 	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
@@ -43,7 +43,7 @@ require (
 	github.com/arduino/go-properties-orderedmap v1.8.0 // indirect
 	github.com/arduino/go-timeutils v0.0.0-20171220113728-d1dd9e313b1b // indirect
 	github.com/arduino/go-win32-utils v1.0.0 // indirect
-	github.com/briandowns/spinner v1.16.0 // indirect
+	github.com/briandowns/spinner v1.19.0 // indirect
 	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/codeclysm/extract/v3 v3.1.1 // indirect
 	github.com/containerd/console v1.0.3 // indirect
