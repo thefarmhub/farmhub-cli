@@ -3,8 +3,10 @@ package arduino
 import (
 	"bytes"
 	"context"
+	"strings"
 
 	"github.com/arduino/arduino-cli/commands/compile"
+	"github.com/arduino/arduino-cli/commands/core"
 	"github.com/arduino/arduino-cli/commands/lib"
 	"github.com/arduino/arduino-cli/commands/upload"
 	"github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
@@ -25,14 +27,31 @@ func NewArduino(fbqn string) *Arduino {
 	}
 }
 
-func (a *Arduino) InstallLibrary(name, version string) error {
-	req := &rpc.LibraryInstallRequest{
-		Instance: a.instance,
-		Name:     name,
-		Version:  version,
-	}
+func (a *Arduino) InstallLibrary(req *rpc.LibraryInstallRequest) error {
+	req.Instance = a.instance
 
 	return lib.LibraryInstall(context.Background(), req, feedback.ProgressBar(), feedback.TaskProgress())
+}
+
+func (a *Arduino) GitLibraryInstall(req *rpc.GitLibraryInstallRequest) error {
+	req.Instance = a.instance
+
+	err := lib.GitLibraryInstall(context.Background(), req, feedback.TaskProgress())
+	if err != nil {
+		if strings.Contains(err.Error(), "already installed") {
+			return nil
+		}
+
+		return err
+	}
+
+	return nil
+}
+
+func (a *Arduino) PlatformInstall(req *rpc.PlatformInstallRequest) (*rpc.PlatformInstallResponse, error) {
+	req.Instance = a.instance
+
+	return core.PlatformInstall(context.Background(), req, feedback.ProgressBar(), feedback.TaskProgress())
 }
 
 func (a *Arduino) Compile(path string) error {
