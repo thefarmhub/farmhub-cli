@@ -5,20 +5,20 @@
 class Farmhub < Formula
   desc ""
   homepage "https://farmhub.ag"
-  version "1.0.10"
+  version "1.1.0"
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.0.10/farmhub_Darwin_x86_64.tar.gz"
-      sha256 "624ba446f0fc8f3ce6ca149d16b78c8c47b858fcb2e8d69743d1d3abd9d58553"
+      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.1.0/farmhub_Darwin_x86_64.tar.gz"
+      sha256 "8f2fcc4377c05e6772c8501b6da2ed1649d1a51ee87f088c8206a45e56da9eca"
 
       def install
         bin.install "farmhub"
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.0.10/farmhub_Darwin_arm64.tar.gz"
-      sha256 "7ef03d21e676e4df8edf6541b99f1ab82b087aadda6800d2a7a14be5784116d1"
+      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.1.0/farmhub_Darwin_arm64.tar.gz"
+      sha256 "4738bf751db704b872bb02faa8ef4fc68427e4f0d263f851085dbac2298d4a75"
 
       def install
         bin.install "farmhub"
@@ -27,17 +27,17 @@ class Farmhub < Formula
   end
 
   on_linux do
-    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.0.10/farmhub_Linux_arm64.tar.gz"
-      sha256 "fec4f7894450ce140855ee27e24197de0317166ee6faa46f146c3134d142e103"
+    if Hardware::CPU.intel?
+      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.1.0/farmhub_Linux_x86_64.tar.gz"
+      sha256 "97be300f7d91f5c78c6357fdc31f3025f99fb21f9694794fb1d9000db516c796"
 
       def install
         bin.install "farmhub"
       end
     end
-    if Hardware::CPU.intel?
-      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.0.10/farmhub_Linux_x86_64.tar.gz"
-      sha256 "b55913f8a725cafdaa5e86b59774ec7da5dc66c2a42f210bf09b1707b0e8515e"
+    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.1.0/farmhub_Linux_arm64.tar.gz"
+      sha256 "06b044c01e5ea35f401f92bc7269ed40de903e3aa8a605f5bc9934ffe5628648"
 
       def install
         bin.install "farmhub"
