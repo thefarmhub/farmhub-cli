@@ -1,46 +1,29 @@
-package flash
+package monitor
 
 import (
+	"context"
+
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 	"github.com/thefarmhub/farmhub-cli/internal/kit"
 	"go.bug.st/serial"
 )
 
-func NewFlashCommand() *cobra.Command {
-	var cmd = &cobra.Command{
-		Use:   "flash",
-		Short: "Flashes to hardware",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			selectedPort := mustSelectPort()
+func NewMonitorCommand() *cobra.Command {
+	var monitorCmd = &cobra.Command{
+		Use:   "monitor",
+		Short: "Monitor serial port data",
+		Run: func(cmd *cobra.Command, args []string) {
+			port := mustSelectPort()
 			hardware := mustSelectKit()
-			hardware.SetPort(selectedPort)
-			hardware.SetPath(args[0])
+			hardware.SetPort(port)
 
-			spinnerInit, _ := pterm.DefaultSpinner.Start("Setting up configuration...")
-			err := hardware.Init()
-			if err != nil {
-				spinnerInit.Fail(err.Error())
-				return err
-			}
-
-			spinnerInit.Success("Configuration initialized")
-
-			spinnerUpload, _ := pterm.DefaultSpinner.Start("Flashing...")
-			err = hardware.Upload()
-			if err != nil {
-				spinnerUpload.Fail(err.Error())
-				return err
-			}
-
-			spinnerUpload.Success("Successfully uploaded sketch")
-
-			return nil
+			ctx := context.Background()
+			hardware.Monitor(ctx)
 		},
 	}
 
-	return cmd
+	return monitorCmd
 }
 
 func mustSelectPort() string {

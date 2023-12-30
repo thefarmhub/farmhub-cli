@@ -1,6 +1,8 @@
-package flasher
+package kit
 
 import (
+	"context"
+
 	"github.com/arduino/arduino-cli/configuration"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	"github.com/thefarmhub/farmhub-cli/internal/arduino"
@@ -12,11 +14,14 @@ type AquaponicsKit struct {
 	port    string
 }
 
-func NewAquaponicsKit() *AquaponicsKit {
+func NewAquaponicsKit() Kit {
 	configuration.Settings = configuration.Init("")
 
+	a := arduino.NewArduino()
+	a.SetFBQN("esp32:esp32:featheresp32")
+
 	return &AquaponicsKit{
-		arduino: arduino.NewArduino("esp32:esp32:featheresp32"),
+		arduino: a,
 	}
 }
 
@@ -61,4 +66,12 @@ func (e *AquaponicsKit) Upload() error {
 
 func (e *AquaponicsKit) SetPath(path string) {
 	e.path = path
+}
+
+func (e *AquaponicsKit) Monitor(ctx context.Context) error {
+	return e.arduino.Monitor(ctx, e.port)
+}
+
+func init() {
+	availableKits["Aquaponics Kit"] = NewAquaponicsKit
 }

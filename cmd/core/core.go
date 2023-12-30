@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/thefarmhub/farmhub-cli/cmd/flash"
+	"github.com/thefarmhub/farmhub-cli/cmd/monitor"
 	versioncmd "github.com/thefarmhub/farmhub-cli/cmd/version"
 	"github.com/thefarmhub/farmhub-cli/internal/version"
 )
@@ -30,6 +31,7 @@ configure and publish your IoT sensor data to your dashboard.
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
 
 	rootCmd.AddCommand(flash.NewFlashCommand())
+	rootCmd.AddCommand(monitor.NewMonitorCommand())
 	rootCmd.AddCommand(versioncmd.NewVersionCommand())
 
 	return rootCmd

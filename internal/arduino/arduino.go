@@ -8,6 +8,7 @@ import (
 	"github.com/arduino/arduino-cli/commands/compile"
 	"github.com/arduino/arduino-cli/commands/core"
 	"github.com/arduino/arduino-cli/commands/lib"
+	climonitor "github.com/arduino/arduino-cli/commands/monitor"
 	"github.com/arduino/arduino-cli/commands/upload"
 	"github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
@@ -20,11 +21,14 @@ type Arduino struct {
 	fbqn     string
 }
 
-func NewArduino(fbqn string) *Arduino {
+func NewArduino() *Arduino {
 	return &Arduino{
 		instance: instance.CreateAndInit(),
-		fbqn:     fbqn,
 	}
+}
+
+func (a *Arduino) SetFBQN(fbqn string) {
+	a.fbqn = fbqn
 }
 
 func (a *Arduino) InstallLibrary(req *rpc.LibraryInstallRequest) error {
@@ -79,6 +83,18 @@ func (a *Arduino) Upload(portAddress, path string) error {
 
 	var outStream, errStream bytes.Buffer
 	_, err := upload.Upload(ctx, uploadReq, &outStream, &errStream)
+
+	return err
+}
+
+func (a *Arduino) Monitor(ctx context.Context, portAddress string) error {
+	monitorReq := &rpc.MonitorRequest{
+		Port:     &rpc.Port{Address: portAddress},
+		Instance: a.instance,
+		Fqbn:     a.fbqn,
+	}
+
+	_, _, err := climonitor.Monitor(ctx, monitorReq)
 
 	return err
 }
