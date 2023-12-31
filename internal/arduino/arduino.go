@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/arduino/arduino-cli/arduino/monitor"
 	"github.com/arduino/arduino-cli/commands/compile"
 	"github.com/arduino/arduino-cli/commands/core"
 	"github.com/arduino/arduino-cli/commands/lib"
@@ -20,11 +19,12 @@ import (
 	"github.com/spf13/afero"
 	"github.com/thefarmhub/farmhub-cli/internal/arduino/cli/feedback"
 	"github.com/thefarmhub/farmhub-cli/internal/arduino/cli/instance"
+	"go.bug.st/cleanup"
 )
 
 type Arduino struct {
 	instance *commands.Instance
-	fbqn     string
+	fqbn     string
 }
 
 var Fs afero.Fs = afero.NewOsFs()
@@ -35,12 +35,8 @@ func NewArduino() *Arduino {
 	}
 }
 
-func (a *Arduino) SetFQBN(fbqn string) {
-	a.fbqn = fbqn
-}
-
-func (a *Arduino) GetInstance() *commands.Instance {
-	return a.instance
+func (a *Arduino) SetFQBN(fqbn string) {
+	a.fqbn = fqbn
 }
 
 func (a *Arduino) InstallLibrary(req *rpc.LibraryInstallRequest) error {
@@ -73,7 +69,7 @@ func (a *Arduino) PlatformInstall(req *rpc.PlatformInstallRequest) (*rpc.Platfor
 func (a *Arduino) Compile(path string) error {
 	ctx := context.Background()
 	compileReq := &rpc.CompileRequest{
-		Fqbn:       a.fbqn,
+		Fqbn:       a.fqbn,
 		Instance:   a.instance,
 		SketchPath: path,
 	}
@@ -87,7 +83,7 @@ func (a *Arduino) Compile(path string) error {
 func (a *Arduino) Upload(portAddress, path string) error {
 	ctx := context.Background()
 	uploadReq := &rpc.UploadRequest{
-		Fqbn:       a.fbqn,
+		Fqbn:       a.fqbn,
 		Port:       &rpc.Port{Address: portAddress},
 		Instance:   a.instance,
 		SketchPath: path,
@@ -99,14 +95,47 @@ func (a *Arduino) Upload(portAddress, path string) error {
 	return err
 }
 
-func (a *Arduino) Monitor(ctx context.Context, portAddress string) (*climonitor.PortProxy, *monitor.PortDescriptor, error) {
-	monitorReq := &rpc.MonitorRequest{
-		Port:     &rpc.Port{Address: portAddress, Protocol: "serial"},
-		Instance: a.instance,
-		Fqbn:     a.fbqn,
+func (a *Arduino) Monitor(ctx context.Context, portAddress string) (error) {
+	feedback.SetFormat(feedback.Text)
+
+	configuration := &rpc.MonitorPortConfiguration{}
+	portProxy, _, err := climonitor.Monitor(context.Background(), &rpc.MonitorRequest{
+		Instance:          a.instance,
+		Port:              &rpc.Port{Address: portAddress, Protocol: "serial"},
+		Fqbn:              a.fqbn,
+		PortConfiguration: configuration,
+	})
+	if err != nil {
+		feedback.FatalError(err, feedback.ErrGeneric)
+	}
+	defer portProxy.Close()
+
+	feedback.Print(fmt.Sprintf("Connected to %s! Press CTRL-C to exit.", portAddress))
+
+	ttyIn, ttyOut, err := feedback.InteractiveStreams()
+	if err != nil {
+		feedback.FatalError(err, feedback.ErrGeneric)
 	}
 
-	return climonitor.Monitor(ctx, monitorReq)
+	ctx, cancel := cleanup.InterruptableContext(context.Background())
+
+	go func() {
+		_, err := io.Copy(ttyOut, portProxy)
+		if err != nil && !errors.Is(err, io.EOF) {
+			feedback.Print(fmt.Sprintf("Port closed: %v", err))
+		}
+		cancel()
+	}()
+	go func() {
+		_, err := io.Copy(portProxy, ttyIn)
+		if err != nil && !errors.Is(err, io.EOF) {
+			feedback.Print(fmt.Sprintf("Port closed: %v", err))
+		}
+		cancel()
+	}()
+
+	<-ctx.Done()
+	return nil
 }
 
 // This prepares a sketch folder or file for compilation

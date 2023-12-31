@@ -2,23 +2,16 @@ package kit
 
 import (
 	"context"
-	"errors"
-	"fmt"
-	"io"
 
-	"github.com/arduino/arduino-cli/commands/monitor"
 	"github.com/arduino/arduino-cli/configuration"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	"github.com/thefarmhub/farmhub-cli/internal/arduino"
-	"github.com/thefarmhub/farmhub-cli/internal/arduino/cli/feedback"
-	"go.bug.st/cleanup"
 )
 
 type AquaponicsKit struct {
 	arduino *arduino.Arduino
 	path    string
 	port    string
-	fqbn    string
 }
 
 func NewAquaponicsKit() Kit {
@@ -31,7 +24,6 @@ func NewAquaponicsKit() Kit {
 
 	return &AquaponicsKit{
 		arduino: a,
-		fqbn:    fqbn,
 	}
 }
 
@@ -86,46 +78,7 @@ func (e *AquaponicsKit) SetPath(path string) error {
 }
 
 func (e *AquaponicsKit) Monitor(ctx context.Context) error {
-	feedback.SetFormat(feedback.Text)
-
-	configuration := &rpc.MonitorPortConfiguration{}
-	portProxy, _, err := monitor.Monitor(context.Background(), &rpc.MonitorRequest{
-		Instance:          e.arduino.GetInstance(),
-		Port:              &rpc.Port{Address: e.port, Protocol: "serial"},
-		Fqbn:              e.fqbn,
-		PortConfiguration: configuration,
-	})
-	if err != nil {
-		feedback.FatalError(err, feedback.ErrGeneric)
-	}
-	defer portProxy.Close()
-
-	feedback.Print(fmt.Sprintf("Connected to %s! Press CTRL-C to exit.", e.port))
-
-	ttyIn, ttyOut, err := feedback.InteractiveStreams()
-	if err != nil {
-		feedback.FatalError(err, feedback.ErrGeneric)
-	}
-
-	ctx, cancel := cleanup.InterruptableContext(context.Background())
-
-	go func() {
-		_, err := io.Copy(ttyOut, portProxy)
-		if err != nil && !errors.Is(err, io.EOF) {
-			feedback.Print(fmt.Sprintf("Port closed: %v", err))
-		}
-		cancel()
-	}()
-	go func() {
-		_, err := io.Copy(portProxy, ttyIn)
-		if err != nil && !errors.Is(err, io.EOF) {
-			feedback.Print(fmt.Sprintf("Port closed: %v", err))
-		}
-		cancel()
-	}()
-
-	<-ctx.Done()
-	return nil
+	return e.arduino.Monitor(ctx, e.port)
 }
 
 func init() {
