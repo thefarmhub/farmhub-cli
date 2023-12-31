@@ -42,9 +42,10 @@ release:
     name: farmhub-cli
 
 brews:
-  - tap:
+  - repository:
       owner: thefarmhub
       name: farmhub-cli
+    folder: Formula
     commit_author:
       name: FarmHub
       email: support@farmhub.ag
@@ -52,14 +53,15 @@ brews:
     test: |
       system "#{bin}/farmhub version"
 
-scoop:
-  bucket:
-    owner: thefarmhub
-    name: farmhub-cli
-  commit_author:
-    name: FarmHub
-    email: support@farmhub.ag
-  homepage: "https://farmhub.ag"
+scoops:
+  - bucket:
+      owner: thefarmhub
+      name: farmhub-cli
+    folder: Scoops
+    commit_author:
+      name: FarmHub
+      email: support@farmhub.ag
+    homepage: "https://farmhub.ag"
 
 changelog:
   sort: asc
