@@ -14,7 +14,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/afero v1.10.0
 	github.com/spf13/cobra v1.8.0
-	github.com/spf13/viper v1.17.0 // indirect
+	github.com/spf13/viper v1.17.0
 	github.com/stripe/stripe-cli v1.19.1
 	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
@@ -28,6 +28,8 @@ require (
 	github.com/arduino/arduino-cli v0.35.0-rc.8
 	github.com/arduino/go-paths-helper v1.11.0
 	github.com/cmaglie/pb v1.0.27
+	github.com/machinebox/graphql v0.2.2
+	github.com/manifoldco/promptui v0.9.0
 	github.com/pterm/pterm v0.12.72
 	github.com/stretchr/testify v1.8.4
 	go.bug.st/cleanup v1.0.0
@@ -46,6 +48,7 @@ require (
 	github.com/arduino/go-timeutils v0.0.0-20171220113728-d1dd9e313b1b // indirect
 	github.com/arduino/go-win32-utils v1.0.0 // indirect
 	github.com/briandowns/spinner v1.19.0 // indirect
+	github.com/chzyer/readline v1.5.1 // indirect
 	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/codeclysm/extract/v3 v3.1.1 // indirect
 	github.com/containerd/console v1.0.3 // indirect

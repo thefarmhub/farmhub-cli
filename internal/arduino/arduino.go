@@ -95,7 +95,7 @@ func (a *Arduino) Upload(portAddress, path string) error {
 	return err
 }
 
-func (a *Arduino) Monitor(ctx context.Context, portAddress string) (error) {
+func (a *Arduino) Monitor(ctx context.Context, portAddress string) error {
 	feedback.SetFormat(feedback.Text)
 
 	configuration := &rpc.MonitorPortConfiguration{}
