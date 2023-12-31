@@ -78,7 +78,7 @@ func LibraryList(ctx context.Context, req *rpc.LibraryListRequest) (*rpc.Library
 				}
 			}
 
-			// Check if library is compatible with board specified by FBQN
+			// Check if library is compatible with board specified by FQBN
 			lib.Library.CompatibleWith = map[string]bool{
 				fqbnString: lib.Library.IsCompatibleWith(fqbn.PlatformArch),
 			}

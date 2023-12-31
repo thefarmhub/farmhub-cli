@@ -1,6 +1,8 @@
-package flash
+package monitor
 
 import (
+	"context"
+
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 	"github.com/thefarmhub/farmhub-cli/internal/kit"
@@ -12,40 +14,18 @@ var (
 	port string
 )
 
-func NewFlashCommand() *cobra.Command {
+func NewMonitorCommand() *cobra.Command {
 	var cmd = &cobra.Command{
-		Use:   "flash",
-		Short: "Flashes to hardware",
-		Args:  cobra.ExactArgs(1),
+		Use:   "monitor",
+		Short: "Monitors the serial port",
+		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			selectedPort := mustSelectPort()
 			hardware := mustSelectKit()
 			hardware.SetPort(selectedPort)
 
-			err := hardware.SetPath(args[0])
-			if err != nil {
-				return err
-			}
-
-			spinnerInit, _ := pterm.DefaultSpinner.Start("Setting up configuration...")
-			err = hardware.Init()
-			if err != nil {
-				spinnerInit.Fail(err.Error())
-				return err
-			}
-
-			spinnerInit.Success("Configuration initialized")
-
-			spinnerUpload, _ := pterm.DefaultSpinner.Start("Flashing...")
-			err = hardware.Upload()
-			if err != nil {
-				spinnerUpload.Fail(err.Error())
-				return err
-			}
-
-			spinnerUpload.Success("Successfully uploaded sketch")
-
-			return nil
+			ctx := context.Background()
+			return hardware.Monitor(ctx)
 		},
 	}
 

@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/arduino/arduino-cli/arduino/monitor"
 	"github.com/arduino/arduino-cli/commands/compile"
 	"github.com/arduino/arduino-cli/commands/core"
 	"github.com/arduino/arduino-cli/commands/lib"
@@ -34,8 +35,12 @@ func NewArduino() *Arduino {
 	}
 }
 
-func (a *Arduino) SetFBQN(fbqn string) {
+func (a *Arduino) SetFQBN(fbqn string) {
 	a.fbqn = fbqn
+}
+
+func (a *Arduino) GetInstance() *commands.Instance {
+	return a.instance
 }
 
 func (a *Arduino) InstallLibrary(req *rpc.LibraryInstallRequest) error {
@@ -94,16 +99,14 @@ func (a *Arduino) Upload(portAddress, path string) error {
 	return err
 }
 
-func (a *Arduino) Monitor(ctx context.Context, portAddress string) error {
+func (a *Arduino) Monitor(ctx context.Context, portAddress string) (*climonitor.PortProxy, *monitor.PortDescriptor, error) {
 	monitorReq := &rpc.MonitorRequest{
-		Port:     &rpc.Port{Address: portAddress},
+		Port:     &rpc.Port{Address: portAddress, Protocol: "serial"},
 		Instance: a.instance,
 		Fqbn:     a.fbqn,
 	}
 
-	_, _, err := climonitor.Monitor(ctx, monitorReq)
-
-	return err
+	return climonitor.Monitor(ctx, monitorReq)
 }
 
 // This prepares a sketch folder or file for compilation
