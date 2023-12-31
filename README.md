@@ -12,3 +12,11 @@ Handling your IoT devices and data with ease.
 brew tap farmhub/famrhub-cli https://github.com/thefarmhub/farmhub-cli
 brew install farmhub
 ```
+
+## Downloading the latest release
+
+If you're not using a package manager you can just download the binary from our [releases](https://github.com/thefarmhub/farmhub-cli/releases) page or use the script below to automatically download it per your operating system requirements.
+
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/thefarmhub/farmhub-cli/main/download.sh)"
+```
