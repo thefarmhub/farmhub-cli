@@ -1,6 +1,10 @@
 package kit
 
-import "context"
+import (
+	"context"
+
+	"github.com/thefarmhub/farmhub-cli/internal/model"
+)
 
 type Kit interface {
 	// SetPort specifies where it should be operating when flashing and monitoring
@@ -14,6 +18,9 @@ type Kit interface {
 
 	// Upload flashes the sketch to the specified port
 	Upload() error
+
+	// GenerateCode generates the code necessary for this kit
+	GenerateCode(sensor *model.Sensor) (string, error)
 
 	// Monitor starts monitoring the specified port
 	Monitor(ctx context.Context) error

@@ -2,14 +2,20 @@ package generate
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/thefarmhub/farmhub-cli/internal/fhclient"
+	"github.com/thefarmhub/farmhub-cli/internal/kit"
+	"github.com/thefarmhub/farmhub-cli/internal/model"
 )
 
-var project string
+var (
+	kitFlag string
+	project string
+)
 
 // NewGenerateCommand creates a new Cobra command for the generate process.
 func NewGenerateCommand() *cobra.Command {
@@ -30,16 +36,25 @@ func NewGenerateCommand() *cobra.Command {
 				}
 			}
 
-			selectedSensorId, err := selectSensor(client, projectId)
+			sensor, err := selectSensor(client, projectId)
 			if err != nil {
 				return err
 			}
 
-			pterm.Success.Println("Selected sensor ID:", selectedSensorId)
+			hardware := mustSelectKit()
+
+			output, err := hardware.GenerateCode(sensor)
+			if err != nil {
+				return err
+			}
+
+			fmt.Println(output)
+
 			return nil
 		},
 	}
 
+	cmd.Flags().StringVarP(&kitFlag, "kit", "k", "", "Select the kit to use")
 	cmd.Flags().StringVarP(&project, "project", "p", "", "Select the project by ID")
 
 	return cmd
@@ -74,29 +89,46 @@ func selectProject(client *fhclient.Client) (string, error) {
 }
 
 // selectSensor allows the user to select a sensor from a list.
-func selectSensor(client *fhclient.Client, projectId string) (string, error) {
+func selectSensor(client *fhclient.Client, projectId string) (*model.Sensor, error) {
 	sensors, err := client.GetSensorsByProjectID(context.Background(), projectId)
 	if err != nil {
 		pterm.Fatal.Println("Error fetching sensors:", err)
-		return "", err
+		return nil, err
 	}
 
 	sensorNames := make([]string, len(sensors))
-	sensorMap := make(map[string]string)
+	sensorMap := make(map[string]*model.Sensor)
 	for i, sensor := range sensors {
 		sensorName := sensor.Name + " (" + sensor.ID + ")"
 		sensorNames[i] = sensorName
-		sensorMap[sensorName] = sensor.ID
+		sensorMap[sensorName] = &sensor
 	}
 
-	selectedSensor, err := pterm.DefaultInteractiveSelect.
+	selectedSensorName, err := pterm.DefaultInteractiveSelect.
 		WithDefaultText("Select the sensor: ").
 		WithOptions(sensorNames).
 		Show()
 	if err != nil {
 		pterm.Fatal.Println("Error selecting sensor:", err)
-		return "", err
+		return nil, err
 	}
 
-	return sensorMap[selectedSensor], nil
+	return sensorMap[selectedSensorName], nil
+}
+
+func mustSelectKit() kit.Kit {
+	var err error
+	selectedKit := kitFlag
+
+	if selectedKit == "" {
+		selectedKit, err = pterm.DefaultInteractiveSelect.
+			WithDefaultText("Select the sensor: ").
+			WithOptions(kit.GetKitNames()).
+			Show()
+		if err != nil {
+			pterm.Fatal.Println("Error selecting kit:", err)
+		}
+	}
+
+	return kit.GetKitByName(selectedKit)
 }

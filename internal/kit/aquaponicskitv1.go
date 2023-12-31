@@ -1,11 +1,16 @@
 package kit
 
 import (
+	"bytes"
 	"context"
+	"io"
+	"net/http"
+	"text/template"
 
 	"github.com/arduino/arduino-cli/configuration"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	"github.com/thefarmhub/farmhub-cli/internal/arduino"
+	"github.com/thefarmhub/farmhub-cli/internal/model"
 )
 
 type AquaponicsKitV1 struct {
@@ -75,6 +80,56 @@ func (e *AquaponicsKitV1) SetPath(path string) error {
 	e.path = newPath
 
 	return nil
+}
+
+func (e *AquaponicsKitV1) GenerateCode(sensor *model.Sensor) (string, error) {
+	url := "https://raw.githubusercontent.com/thefarmhub/hardware-starter-kits/main/scientific-atlas/v2/aquaponics-kit/aquaponics-kit.ino"
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	content, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	tmpl, err := template.New("code").Parse(string(content))
+	if err != nil {
+		return "", err
+	}
+
+	type ConfigVariables struct {
+		WiFiSSID                 string
+		WiFiPassword             string
+		TopicPH                  string
+		TopicEC                  string
+		TopicDO                  string
+		TopicTEMP                string
+		TopicHUM                 string
+		TopicCO2                 string
+		ThingName                string
+		CertificatePEM           string
+		CertificatePrivateKey    string
+		RootCertificateAuthority string
+		IotEndpoint              string
+	}
+
+	var tpl bytes.Buffer
+	err = tmpl.Execute(&tpl, ConfigVariables{
+		IotEndpoint:              "iot.farmhub.ag",
+		CertificatePEM:           sensor.IoTCertificatePem,
+		CertificatePrivateKey:    sensor.IoTCertificatePrivateKey,
+		RootCertificateAuthority: sensor.IoTRootCertificateAuthority,
+		ThingName:                sensor.IoTThingName,
+	})
+	if err != nil {
+		return "", err
+	}
+
+	return tpl.String(), nil
 }
 
 func (e *AquaponicsKitV1) Monitor(ctx context.Context) error {

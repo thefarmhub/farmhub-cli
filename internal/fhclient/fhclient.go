@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/machinebox/graphql"
+	"github.com/thefarmhub/farmhub-cli/internal/model"
 )
 
 const defaultEndpoint = "https://api.farmhub.ag/graphql"
@@ -105,31 +106,13 @@ func (c *Client) GetProjects(ctx context.Context) ([]Project, error) {
 	return respData.Viewer.Projects.Nodes, nil
 }
 
-// Sensor represents detailed information about a sensor.
-type Sensor struct {
-	ID                          string `json:"id"`
-	Name                        string `json:"name"`
-	Description                 string `json:"description"`
-	Active                      bool   `json:"active"`
-	Endpoint                    string `json:"endpoint"`
-	IoTThingName                string `json:"iotThingName"`
-	IoTCertificatePem           string `json:"iotCertificatePem"`
-	IoTCertificatePrivateKey    string `json:"iotCertificatePrivateKey"`
-	IoTRootCertificateAuthority string `json:"iotRootCertificateAuthority"`
-	Logs                        []struct {
-		ID       string `json:"id"`
-		Name     string `json:"name"`
-		IoTTopic string `json:"iotTopic"`
-	} `json:"logs"`
-}
-
 // SensorsResponse represents the response structure for the sensors query.
 type SensorsResponse struct {
 	Viewer struct {
 		Projects struct {
 			Nodes []struct {
 				Sensors struct {
-					Nodes []Sensor
+					Nodes []model.Sensor
 				} `json:"sensors"`
 			} `json:"nodes"`
 		} `json:"projects"`
@@ -137,7 +120,7 @@ type SensorsResponse struct {
 }
 
 // GetSensorsByProjectID fetches sensors for a given project ID.
-func (c *Client) GetSensorsByProjectID(ctx context.Context, projectId string) ([]Sensor, error) {
+func (c *Client) GetSensorsByProjectID(ctx context.Context, projectId string) ([]model.Sensor, error) {
 	if projectId == "" {
 		return nil, errors.New("project ID is required")
 	}

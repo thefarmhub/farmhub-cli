@@ -1,11 +1,16 @@
 package kit
 
 import (
+	"bytes"
 	"context"
+	"io"
+	"net/http"
+	"text/template"
 
 	"github.com/arduino/arduino-cli/configuration"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	"github.com/thefarmhub/farmhub-cli/internal/arduino"
+	"github.com/thefarmhub/farmhub-cli/internal/model"
 )
 
 type HydroponicsKitV2 struct {
@@ -79,6 +84,34 @@ func (e *HydroponicsKitV2) SetPath(path string) error {
 
 func (e *HydroponicsKitV2) Monitor(ctx context.Context) error {
 	return e.arduino.Monitor(ctx, e.port)
+}
+
+func (e *HydroponicsKitV2) GenerateCode(sensor *model.Sensor) (string, error) {
+	url := "https://raw.githubusercontent.com/thefarmhub/hardware-starter-kits/main/scientific-atlas/v2/hydroponics-kit/hydroponics-kit.ino"
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	content, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	tmpl, err := template.New("code").Parse(string(content))
+	if err != nil {
+		return "", err
+	}
+
+	var tpl bytes.Buffer
+	err = tmpl.Execute(&tpl, map[string]interface{}{})
+	if err != nil {
+		return "", err
+	}
+
+	return tpl.String(), nil
 }
 
 func init() {
