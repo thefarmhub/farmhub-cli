@@ -8,13 +8,13 @@ import (
 	"github.com/thefarmhub/farmhub-cli/internal/arduino"
 )
 
-type AquaponicsKit struct {
+type AquaponicsKitV1 struct {
 	arduino *arduino.Arduino
 	path    string
 	port    string
 }
 
-func NewAquaponicsKit() Kit {
+func NewAquaponicsKitV1() Kit {
 	configuration.Settings = configuration.Init("")
 
 	fqbn := "esp32:esp32:featheresp32"
@@ -22,16 +22,16 @@ func NewAquaponicsKit() Kit {
 	a := arduino.NewArduino()
 	a.SetFQBN(fqbn)
 
-	return &AquaponicsKit{
+	return &AquaponicsKitV1{
 		arduino: a,
 	}
 }
 
-func (e *AquaponicsKit) SetPort(port string) {
+func (e *AquaponicsKitV1) SetPort(port string) {
 	e.port = port
 }
 
-func (e *AquaponicsKit) Init() error {
+func (e *AquaponicsKitV1) Init() error {
 	configuration.Settings.Set("board_manager.additional_urls.0", "https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json")
 
 	_, err := e.arduino.PlatformInstall(&rpc.PlatformInstallRequest{
@@ -57,7 +57,7 @@ func (e *AquaponicsKit) Init() error {
 	return nil
 }
 
-func (e *AquaponicsKit) Upload() error {
+func (e *AquaponicsKitV1) Upload() error {
 	err := e.arduino.Compile(e.path)
 	if err != nil {
 		return err
@@ -66,7 +66,7 @@ func (e *AquaponicsKit) Upload() error {
 	return e.arduino.Upload(e.port, e.path)
 }
 
-func (e *AquaponicsKit) SetPath(path string) error {
+func (e *AquaponicsKitV1) SetPath(path string) error {
 	newPath, err := arduino.PrepareSketch(path)
 	if err != nil {
 		return err
@@ -77,10 +77,10 @@ func (e *AquaponicsKit) SetPath(path string) error {
 	return nil
 }
 
-func (e *AquaponicsKit) Monitor(ctx context.Context) error {
+func (e *AquaponicsKitV1) Monitor(ctx context.Context) error {
 	return e.arduino.Monitor(ctx, e.port)
 }
 
 func init() {
-	availableKits["aquaponics-kit-v1"] = NewAquaponicsKit
+	availableKits["aquaponics-kit-v1"] = NewAquaponicsKitV1
 }
