@@ -116,9 +116,9 @@ type Sensor struct {
 	IoTCertificatePem           string `json:"iotCertificatePem"`
 	IoTCertificatePrivateKey    string `json:"iotCertificatePrivateKey"`
 	IoTRootCertificateAuthority string `json:"iotRootCertificateAuthority"`
-	Logs []struct {
-		ID      string `json:"id"`
-		Name    string `json:"name"`
+	Logs                        []struct {
+		ID       string `json:"id"`
+		Name     string `json:"name"`
 		IoTTopic string `json:"iotTopic"`
 	} `json:"logs"`
 }
