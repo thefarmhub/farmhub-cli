@@ -11,7 +11,7 @@ import (
 
 var (
 	kitFlag string
-	port string
+	port    string
 )
 
 func NewMonitorCommand() *cobra.Command {

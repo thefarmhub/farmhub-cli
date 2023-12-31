@@ -30,6 +30,7 @@ require (
 	github.com/cmaglie/pb v1.0.27
 	github.com/pterm/pterm v0.12.72
 	github.com/stretchr/testify v1.8.4
+	go.bug.st/cleanup v1.0.0
 	go.bug.st/serial v1.6.1
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -91,7 +92,6 @@ require (
 	github.com/ulikunitz/xz v0.5.11 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
-	go.bug.st/cleanup v1.0.0 // indirect
 	go.bug.st/downloader/v2 v2.1.1 // indirect
 	go.bug.st/relaxed-semver v0.11.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect

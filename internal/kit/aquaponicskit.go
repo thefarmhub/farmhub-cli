@@ -18,7 +18,7 @@ type AquaponicsKit struct {
 	arduino *arduino.Arduino
 	path    string
 	port    string
-	fqbn   string
+	fqbn    string
 }
 
 func NewAquaponicsKit() Kit {
@@ -31,7 +31,7 @@ func NewAquaponicsKit() Kit {
 
 	return &AquaponicsKit{
 		arduino: a,
-		fqbn: fqbn,
+		fqbn:    fqbn,
 	}
 }
 

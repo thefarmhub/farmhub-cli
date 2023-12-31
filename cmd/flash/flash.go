@@ -9,7 +9,7 @@ import (
 
 var (
 	kitFlag string
-	port string
+	port    string
 )
 
 func NewFlashCommand() *cobra.Command {

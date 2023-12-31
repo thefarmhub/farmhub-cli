@@ -1,10 +1,10 @@
-#
+# 
 # Translators:
 # CLI team <prj_cli_team@arduino.cc>, 2022
 # Mark Asaad, 2022
 # Osama Breman, 2023
 # طارق عبد الفتاح, 2023
-#
+# 
 msgid ""
 msgstr ""
 "Last-Translator: طارق عبد الفتاح, 2023\n"
@@ -802,7 +802,7 @@ msgstr "خطا اثناء التصحيح : %v"
 
 #: internal/cli/arguments/port.go:144
 msgid "Error during FQBN detection: %v"
-msgstr "خطا اثناء اكتشاف FQBN : %v"
+msgstr "خطا اثناء اكتشاف FBQN : %v"
 
 #: internal/cli/feedback/feedback.go:244 internal/cli/feedback/feedback.go:250
 msgid "Error during JSON encoding of the output: %v"
@@ -1298,7 +1298,7 @@ msgstr "نداء خاطئ : المفروض عرض مساعدة لكنه غير �
 
 #: arduino/errors.go:62
 msgid "Invalid FQBN"
-msgstr "FQBN غير صالح"
+msgstr "FBQN غير صالح"
 
 #: internal/cli/daemon/daemon.go:147
 msgid "Invalid TCP address: port is missing"
@@ -1478,7 +1478,7 @@ msgstr ""
 
 #: internal/cli/board/listall.go:38
 msgid "List all known boards and their corresponding FQBN."
-msgstr "اظهر كل اللوحات المعروفة و FQBN الخاص بها"
+msgstr "اظهر كل اللوحات المعروفة و FBQN الخاص بها"
 
 #: internal/cli/board/list.go:43
 msgid "List connected boards."
@@ -1549,7 +1549,7 @@ msgstr "'%[1]s' مفقود من المكتبة في %[2]s"
 
 #: arduino/errors.go:171
 msgid "Missing FQBN (Fully Qualified Board Name)"
-msgstr "FQBN مفقود (Fully Qualified Board Name)"
+msgstr "FBQN مفقود (Fully Qualified Board Name)"
 
 #: arduino/errors.go:262
 msgid "Missing port"
