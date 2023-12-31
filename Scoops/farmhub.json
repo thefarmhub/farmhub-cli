@@ -1,26 +1,26 @@
 {
-    "version": "1.3.2",
+    "version": "1.3.3",
     "architecture": {
         "32bit": {
-            "url": "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.3.2/farmhub_Windows_i386.zip",
+            "url": "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.3.3/farmhub_Windows_i386.zip",
             "bin": [
                 "farmhub.exe"
             ],
-            "hash": "a4bddd41d399e5f2b54446382fac07e7cd8d165d8f1c0bf4038125d910fa2d7f"
+            "hash": "39e8a52147376789e94d688f7a9281cb94b56889b71886e851246397219c446a"
         },
         "64bit": {
-            "url": "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.3.2/farmhub_Windows_x86_64.zip",
+            "url": "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.3.3/farmhub_Windows_x86_64.zip",
             "bin": [
                 "farmhub.exe"
             ],
-            "hash": "456989116574a0168f810c67464cb22eafdaad570f581326140b85ad4cb84229"
+            "hash": "4cb40c9c673b058b49432a47b582417fd2c006278c82f00ac640d48c3da372e4"
         },
         "arm64": {
-            "url": "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.3.2/farmhub_Windows_arm64.zip",
+            "url": "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.3.3/farmhub_Windows_arm64.zip",
             "bin": [
                 "farmhub.exe"
             ],
-            "hash": "522a10691000b4d23fa63e443bf655d39399d86091708f72c7abf67b7cf8ff79"
+            "hash": "fc4735a567d142aaa4d6090d71fecdc66575fc19fabf39da7bd5da47aea73a2c"
         }
     },
     "homepage": "https://farmhub.ag"
