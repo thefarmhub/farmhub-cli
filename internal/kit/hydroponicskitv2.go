@@ -91,7 +91,7 @@ func (e *HydroponicsKitV2) Monitor(ctx context.Context) error {
 	return e.arduino.Monitor(ctx, e.port)
 }
 
-func (e *HydroponicsKitV2) GenerateCode(sensor *model.Sensor) (string, error) {
+func (e *HydroponicsKitV2) GenerateCode(project *model.Project, sensor *model.Sensor) (string, error) {
 	tmpl, err := template.New("code").Funcs(template.FuncMap{
 		"trim": strings.TrimSpace,
 	}).Parse(hydroponicsKitV2Template)
@@ -120,7 +120,8 @@ func (e *HydroponicsKitV2) GenerateCode(sensor *model.Sensor) (string, error) {
 		ThingName:                sensor.IoTThingName,
 	}
 
-	datacompletion.Complete(&vars, sensor)
+	completer := datacompletion.NewCompleter(project, sensor)
+	completer.Complete(&vars)
 
 	var tpl bytes.Buffer
 	err = tmpl.Execute(&tpl, vars)

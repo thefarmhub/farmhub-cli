@@ -2,11 +2,10 @@ package generate
 
 import (
 	"context"
-	"fmt"
+	"os"
 
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/thefarmhub/farmhub-cli/internal/fhclient"
 	"github.com/thefarmhub/farmhub-cli/internal/kit"
 	"github.com/thefarmhub/farmhub-cli/internal/model"
@@ -15,6 +14,7 @@ import (
 var (
 	kitFlag string
 	project string
+	output  string
 )
 
 // NewGenerateCommand creates a new Cobra command for the generate process.
@@ -27,7 +27,6 @@ func NewGenerateCommand() *cobra.Command {
 			projectId := project
 
 			client := fhclient.NewClient()
-			client.SetToken(viper.GetString("auth.token"))
 
 			if projectId == "" {
 				projectId, err = selectProject(client)
@@ -43,19 +42,20 @@ func NewGenerateCommand() *cobra.Command {
 
 			hardware := mustSelectKit()
 
-			output, err := hardware.GenerateCode(sensor)
+			generated, err := hardware.GenerateCode(&model.Project{ID: projectId}, sensor)
 			if err != nil {
 				return err
 			}
 
-			fmt.Println(output)
-
-			return nil
+			return os.WriteFile(output, []byte(generated), 0644)
 		},
 	}
 
 	cmd.Flags().StringVarP(&kitFlag, "kit", "k", "", "Select the kit to use")
 	cmd.Flags().StringVarP(&project, "project", "p", "", "Select the project by ID")
+	cmd.Flags().StringVarP(&output, "output", "o", "", "Output file")
+
+	cmd.MarkFlagRequired("output")
 
 	return cmd
 }
@@ -71,7 +71,7 @@ func selectProject(client *fhclient.Client) (string, error) {
 	projectNames := make([]string, len(projects))
 	projectMap := make(map[string]string)
 	for i, project := range projects {
-		projectName := project.Name + " (" + project.ID + ")"
+		projectName := project.Name
 		projectNames[i] = projectName
 		projectMap[projectName] = project.ID
 	}

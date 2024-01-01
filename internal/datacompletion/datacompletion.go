@@ -1,15 +1,32 @@
 package datacompletion
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"reflect"
 
 	"github.com/pterm/pterm"
+	"github.com/thefarmhub/farmhub-cli/internal/fhclient"
 	"github.com/thefarmhub/farmhub-cli/internal/model"
 )
 
+type Completer struct {
+	client  *fhclient.Client
+	sensor  *model.Sensor
+	project *model.Project
+}
+
+func NewCompleter(project *model.Project, sensor *model.Sensor) *Completer {
+	return &Completer{
+		client:  fhclient.NewClient(),
+		sensor:  sensor,
+		project: project,
+	}
+}
+
 // Complete fills the empty fields of ConfigVariables based on the datatype tag.
-func Complete[S any](config *S, sensor *model.Sensor) {
+func (c *Completer) Complete(config any) {
 	val := reflect.ValueOf(config).Elem()
 	for i := 0; i < val.NumField(); i++ {
 		field := val.Field(i)
@@ -30,38 +47,47 @@ func Complete[S any](config *S, sensor *model.Sensor) {
 			}
 		case "topic":
 			if field.String() == "" {
-				field.SetString(selectLog(name, metric, sensor))
+				topic, err := c.selectLog(name, metric)
+				if err != nil {
+					pterm.Error.Println(err)
+					continue
+				}
+				field.SetString(topic)
 			}
 		}
 	}
 }
 
-// selectLog displays logs and allows the user to select one.
-func selectLog(name, metric string, sensor *model.Sensor) string {
-	// First, try to find a log that matches the metric directly.
-	for _, log := range sensor.Logs {
+// selectLog displays logs and allows the user to select one
+func (c *Completer) selectLog(name, metric string) (string, error) {
+	for _, log := range c.sensor.Logs {
 		if log.Metric == metric {
-			return log.IoTTopic
+			return log.IoTTopic, nil
 		}
 	}
 
-	// If no direct match is found, allow the user to choose.
-	logOptions := make([]string, len(sensor.Logs))
-	logMap := make(map[string]string)
-
-	for i, log := range sensor.Logs {
-		logOptions[i] = log.Name
-		logMap[log.Name] = log.IoTTopic
+	msg := fmt.Sprintf("Notebook not found for %s. Do you want to create a new log?", name)
+	createLog, _ := pterm.DefaultInteractiveConfirm.Show(msg)
+	if !createLog {
+		return "", errors.New("log creation declined")
 	}
 
-	selectedLogName, _ := pterm.DefaultInteractiveSelect.
-		WithOptions(logOptions).
-		Show(fmt.Sprintf("Select a notebook for %s:", name))
-
-	// Get the IoTTopic from the map using the selected log name
-	if iotTopic, exists := logMap[selectedLogName]; exists {
-		return iotTopic
+	newLog, err := c.client.CreateLog(context.Background(), c.project.ID, name, metric)
+	if err != nil {
+		return "", err
 	}
 
-	return ""
+	c.sensor.Logs = append(c.sensor.Logs, *newLog)
+
+	var logIds []string
+	for _, log := range c.sensor.Logs {
+		logIds = append(logIds, log.ID)
+	}
+
+	_, err = c.client.UpdateSensorLogs(context.Background(), c.sensor.ID, logIds)
+	if err != nil {
+		return "", err
+	}
+
+	return newLog.IoTTopic, nil
 }

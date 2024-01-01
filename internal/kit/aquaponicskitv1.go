@@ -87,7 +87,7 @@ func (e *AquaponicsKitV1) SetPath(path string) error {
 	return nil
 }
 
-func (e *AquaponicsKitV1) GenerateCode(sensor *model.Sensor) (string, error) {
+func (e *AquaponicsKitV1) GenerateCode(project *model.Project, sensor *model.Sensor) (string, error) {
 	tmpl, err := template.New("code").Funcs(template.FuncMap{
 		"trim": strings.TrimSpace,
 	}).Parse(aquaponicsKitV1Template)
@@ -119,7 +119,8 @@ func (e *AquaponicsKitV1) GenerateCode(sensor *model.Sensor) (string, error) {
 		ThingName:                sensor.IoTThingName,
 	}
 
-	datacompletion.Complete(&vars, sensor)
+	completer := datacompletion.NewCompleter(project, sensor)
+	completer.Complete(&vars)
 
 	var tpl bytes.Buffer
 	err = tmpl.Execute(&tpl, vars)

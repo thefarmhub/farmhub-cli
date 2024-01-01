@@ -22,7 +22,7 @@ type Kit interface {
 	Upload() error
 
 	// GenerateCode generates the code necessary for this kit
-	GenerateCode(sensor *model.Sensor) (string, error)
+	GenerateCode(project *model.Project, sensor *model.Sensor) (string, error)
 
 	// Monitor starts monitoring the specified port
 	Monitor(ctx context.Context) error
