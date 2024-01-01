@@ -8,8 +8,8 @@
 #include <PubSubClient.h> // https://github.com/knolleary/pubsubclient
 
 // ------------ Start Configuration ------------ //
-const char *WIFI_SSID = "{{ .WiFiSSID }}";
-const char *WIFI_PASSWORD = "{{ .WiFiPassword }}";
+const char *WIFI_SSID = "{{ .WiFiSSID | trim }}";
+const char *WIFI_PASSWORD = "{{ .WiFiPassword | trim }}";
 
 // You can get the following variables from the
 // FarmHub dashboard under the "Sensors" tab
