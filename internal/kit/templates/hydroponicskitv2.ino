@@ -8,29 +8,29 @@
 #include <PubSubClient.h> // https://github.com/knolleary/pubsubclient
 
 // ------------ Start Configuration ------------ //
-const char *WIFI_SSID = "{{- .WiFiSSID -}}";
-const char *WIFI_PASSWORD = "{{- .WiFiPassword -}}";
+const char *WIFI_SSID = "{{ .WiFiSSID }}";
+const char *WIFI_PASSWORD = "{{ .WiFiPassword }}";
 
 // You can get the following variables from the
 // FarmHub dashboard under the "Sensors" tab
-const char THINGNAME[] = "{{- .ThingName -}}";
-const char TOPIC_PH[] = "{{- .TopicPH -}}";
-const char TOPIC_EC[] = "{{- .TopicEC -}}";
-const char TOPIC_TEMP[] = "{{- .TopicTEMP -}}";
+const char THINGNAME[] = "{{ .ThingName | trim }}";
+const char TOPIC_PH[] = "{{ .TopicPH | trim }}";
+const char TOPIC_EC[] = "{{ .TopicEC | trim }}";
+const char TOPIC_TEMP[] = "{{ .TopicTEMP | trim }}";
 
 static const char FARMHUB_CERT_CRT[] PROGMEM = R"KEY(
-{{ .CertificatePEM }}
+{{ .CertificatePEM | trim }}
 )KEY";
 
 static const char FARMHUB_CERT_PRIVATE[] PROGMEM = R"KEY(
-{{ .CertificatePrivateKey }}
+{{ .CertificatePrivateKey | trim }}
 )KEY";
 
 static const char FARMHUB_CERT_CA[] PROGMEM = R"EOF(
-{{ .RootCertificateAuthority }}
+{{ .RootCertificateAuthority | trim }}
 )EOF";
 
-const char FARMHUB_IOT_ENDPOINT[] = "{{- .IotEndpoint -}}";
+const char FARMHUB_IOT_ENDPOINT[] = "{{ .IotEndpoint | trim }}";
 // ------------ End Configuration ------------ //
 
 WiFiClientSecure wifiClient;

@@ -3,6 +3,7 @@ package kit
 import (
 	"bytes"
 	"context"
+	"strings"
 	"text/template"
 
 	_ "embed"
@@ -91,7 +92,9 @@ func (e *HydroponicsKitV2) Monitor(ctx context.Context) error {
 }
 
 func (e *HydroponicsKitV2) GenerateCode(sensor *model.Sensor) (string, error) {
-	tmpl, err := template.New("code").Parse(hydroponicsKitV2Template)
+	tmpl, err := template.New("code").Funcs(template.FuncMap{
+		"trim": strings.TrimSpace,
+	}).Parse(hydroponicsKitV2Template)
 	if err != nil {
 		return "", err
 	}

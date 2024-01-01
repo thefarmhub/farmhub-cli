@@ -8,32 +8,32 @@
 #include <PubSubClient.h> // https://github.com/knolleary/pubsubclient
 
 // ------------ Start Configuration ------------ //
-const char *WIFI_SSID = "{{- .WiFiSSID -}}";
-const char *WIFI_PASSWORD = "{{- .WiFiPassword -}}";
+const char *WIFI_SSID = "{{ .WiFiSSID | trim }}";
+const char *WIFI_PASSWORD = "{{ .WiFiPassword | trim }}";
 
 // You can get the following variables from the
 // FarmHub dashboard under the "Sensors" tab
-const char THINGNAME[] = "{{- .ThingName -}}";
-const char TOPIC_PH[] = "{{- .TopicPH -}}";
-const char TOPIC_EC[] = "{{- .TopicEC -}}";
-const char TOPIC_DO[] = "{{- .TopicDO -}}";
-const char TOPIC_TEMP[] = "{{- .TopicTEMP -}}";
-const char TOPIC_HUM[] = "{{- .TopicHUM -}}";
-const char TOPIC_CO2[] = "{{- .TopicCO2 -}}";
+const char THINGNAME[] = "{{ .ThingName | trim }}";
+const char TOPIC_PH[] = "{{ .TopicPH | trim }}";
+const char TOPIC_EC[] = "{{ .TopicEC | trim }}";
+const char TOPIC_DO[] = "{{ .TopicDO | trim }}";
+const char TOPIC_TEMP[] = "{{ .TopicTEMP | trim }}";
+const char TOPIC_HUM[] = "{{ .TopicHUM | trim }}";
+const char TOPIC_CO2[] = "{{ .TopicCO2 | trim }}";
 
 static const char FARMHUB_CERT_CRT[] PROGMEM = R"KEY(
-{{ .CertificatePEM }}
+{{ .CertificatePEM | trim }}
 )KEY";
 
 static const char FARMHUB_CERT_PRIVATE[] PROGMEM = R"KEY(
-{{ .CertificatePrivateKey }}
+{{ .CertificatePrivateKey | trim }}
 )KEY";
 
 static const char FARMHUB_CERT_CA[] PROGMEM = R"EOF(
-{{ .RootCertificateAuthority }}
+{{ .RootCertificateAuthority | trim }}
 )EOF";
 
-const char FARMHUB_IOT_ENDPOINT[] = "{{- .IotEndpoint -}}";
+const char FARMHUB_IOT_ENDPOINT[] = "{{ .IotEndpoint | trim }}";
 // ------------ End Configuration ------------ //
 
 WiFiClientSecure wifiClient;

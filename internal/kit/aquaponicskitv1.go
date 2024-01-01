@@ -3,6 +3,7 @@ package kit
 import (
 	"bytes"
 	"context"
+	"strings"
 	"text/template"
 
 	_ "embed"
@@ -87,7 +88,9 @@ func (e *AquaponicsKitV1) SetPath(path string) error {
 }
 
 func (e *AquaponicsKitV1) GenerateCode(sensor *model.Sensor) (string, error) {
-	tmpl, err := template.New("code").Parse(aquaponicsKitV1Template)
+	tmpl, err := template.New("code").Funcs(template.FuncMap{
+		"trim": strings.TrimSpace,
+	}).Parse(aquaponicsKitV1Template)
 	if err != nil {
 		return "", err
 	}
