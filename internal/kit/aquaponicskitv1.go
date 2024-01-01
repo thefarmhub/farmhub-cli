@@ -3,7 +3,6 @@ package kit
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"text/template"
 
 	_ "embed"
@@ -11,6 +10,7 @@ import (
 	"github.com/arduino/arduino-cli/configuration"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	"github.com/thefarmhub/farmhub-cli/internal/arduino"
+	"github.com/thefarmhub/farmhub-cli/internal/datacompletion"
 	"github.com/thefarmhub/farmhub-cli/internal/model"
 )
 
@@ -87,21 +87,20 @@ func (e *AquaponicsKitV1) SetPath(path string) error {
 }
 
 func (e *AquaponicsKitV1) GenerateCode(sensor *model.Sensor) (string, error) {
-	fmt.Println(aquaponicsKitV1Template)
 	tmpl, err := template.New("code").Parse(aquaponicsKitV1Template)
 	if err != nil {
 		return "", err
 	}
 
 	type ConfigVariables struct {
-		WiFiSSID                 string
-		WiFiPassword             string
-		TopicPH                  string
-		TopicEC                  string
-		TopicDO                  string
-		TopicTEMP                string
-		TopicHUM                 string
-		TopicCO2                 string
+		WiFiSSID                 string `datatype:"ssid"`
+		WiFiPassword             string `datatype:"password"`
+		TopicPH                  string `datatype:"topic" metric:"PH" name:"pH"`
+		TopicEC                  string `datatype:"topic" metric:"ELECTRICAL_CONDUCTIVITY" name:"Electrical Conductivity"`
+		TopicDO                  string `datatype:"topic" metric:"DISSOLVED_OXYGEN" name:"Dissolved Oxygen"`
+		TopicTEMP                string `datatype:"topic" metric:"WATER_TEMPERATURE" name:"Water Temperature"`
+		TopicHUM                 string `datatype:"topic" metric:"INDOOR_RELATIVE_HUMIDITY" name:"Humidity"`
+		TopicCO2                 string `datatype:"topic" metric:"CARBON_DIOXIDE" name:"CO2"`
 		ThingName                string
 		CertificatePEM           string
 		CertificatePrivateKey    string
@@ -109,14 +108,18 @@ func (e *AquaponicsKitV1) GenerateCode(sensor *model.Sensor) (string, error) {
 		IotEndpoint              string
 	}
 
-	var tpl bytes.Buffer
-	err = tmpl.Execute(&tpl, ConfigVariables{
-		IotEndpoint:              "iot.farmhub.ag",
+	vars := ConfigVariables{
+		IotEndpoint:              IotEndpoint,
 		CertificatePEM:           sensor.IoTCertificatePem,
 		CertificatePrivateKey:    sensor.IoTCertificatePrivateKey,
 		RootCertificateAuthority: sensor.IoTRootCertificateAuthority,
 		ThingName:                sensor.IoTThingName,
-	})
+	}
+
+	datacompletion.Complete(&vars, sensor)
+
+	var tpl bytes.Buffer
+	err = tmpl.Execute(&tpl, vars)
 	if err != nil {
 		return "", err
 	}

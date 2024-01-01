@@ -144,6 +144,7 @@ func (c *Client) GetSensorsByProjectID(ctx context.Context, projectId string) ([
 								logs {
 									id
 									name
+									metric
 									iotTopic
 								}
 							}

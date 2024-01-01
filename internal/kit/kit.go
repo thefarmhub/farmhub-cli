@@ -6,6 +6,8 @@ import (
 	"github.com/thefarmhub/farmhub-cli/internal/model"
 )
 
+const IotEndpoint = "iot.farmhub.ag"
+
 type Kit interface {
 	// SetPort specifies where it should be operating when flashing and monitoring
 	SetPort(port string)

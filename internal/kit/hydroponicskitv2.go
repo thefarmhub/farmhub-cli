@@ -10,6 +10,7 @@ import (
 	"github.com/arduino/arduino-cli/configuration"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	"github.com/thefarmhub/farmhub-cli/internal/arduino"
+	"github.com/thefarmhub/farmhub-cli/internal/datacompletion"
 	"github.com/thefarmhub/farmhub-cli/internal/model"
 )
 
@@ -95,8 +96,31 @@ func (e *HydroponicsKitV2) GenerateCode(sensor *model.Sensor) (string, error) {
 		return "", err
 	}
 
+	type ConfigVariables struct {
+		WiFiSSID                 string `datatype:"ssid"`
+		WiFiPassword             string `datatype:"password"`
+		TopicPH                  string `datatype:"topic" metric:"PH" name:"pH"`
+		TopicEC                  string `datatype:"topic" metric:"ELECTRICAL_CONDUCTIVITY" name:"Electrical Conductivity"`
+		TopicTEMP                string `datatype:"topic" metric:"WATER_TEMPERATURE" name:"Water Temperature"`
+		ThingName                string
+		CertificatePEM           string
+		CertificatePrivateKey    string
+		RootCertificateAuthority string
+		IotEndpoint              string
+	}
+
+	vars := ConfigVariables{
+		IotEndpoint:              IotEndpoint,
+		CertificatePEM:           sensor.IoTCertificatePem,
+		CertificatePrivateKey:    sensor.IoTCertificatePrivateKey,
+		RootCertificateAuthority: sensor.IoTRootCertificateAuthority,
+		ThingName:                sensor.IoTThingName,
+	}
+
+	datacompletion.Complete(&vars, sensor)
+
 	var tpl bytes.Buffer
-	err = tmpl.Execute(&tpl, map[string]interface{}{})
+	err = tmpl.Execute(&tpl, vars)
 	if err != nil {
 		return "", err
 	}
