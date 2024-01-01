@@ -3,7 +3,9 @@ package generate
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
@@ -62,7 +64,15 @@ func NewGenerateCommand() *cobra.Command {
 				return err
 			}
 
-			return os.WriteFile(output, []byte(generated), 0644)
+			err = os.WriteFile(output, []byte(generated), 0644)
+			if err != nil {
+				return err
+			}
+
+			pterm.Success.Println("Successfully generated code!")
+			fmt.Printf("\nYou can now run the following command to flash the code to your device.\n\n\tfarmhub flash %s\n", strconv.Quote(output))
+
+			return nil
 		},
 	}
 
