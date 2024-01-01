@@ -62,24 +62,17 @@ func (c *Client) Login(ctx context.Context, email, password string) (string, err
 	return respData.AuthLogin.Token, nil
 }
 
-// Project represents a single project with minimal fields.
-type Project struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	Type string `json:"mode"`
-}
-
 // ProjectsResponse represents the response structure for the projects query.
 type GetProjectsResponse struct {
 	Viewer struct {
 		Projects struct {
-			Nodes []Project
+			Nodes []model.Project
 		}
 	}
 }
 
 // GetProjects fetches a list of projects.
-func (c *Client) GetProjects(ctx context.Context) ([]Project, error) {
+func (c *Client) GetProjects(ctx context.Context) ([]model.Project, error) {
 	req := graphql.NewRequest(`
 		query GetAllProjects {
 			viewer {
