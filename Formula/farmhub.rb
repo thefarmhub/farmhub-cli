@@ -5,20 +5,20 @@
 class Farmhub < Formula
   desc ""
   homepage "https://farmhub.ag"
-  version "1.5.0"
+  version "1.5.2"
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.0/farmhub_Darwin_x86_64.tar.gz"
-      sha256 "8ffa2f503d1e0892f52c9823baf7c02e0ce1e2a6fcc4811374255ba44a4668d3"
+      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.2/farmhub_Darwin_x86_64.tar.gz"
+      sha256 "04eb1beb9f912b6bdddebd3c722a49bc885f57e8925d7066b411ba9625ed019f"
 
       def install
         bin.install "farmhub"
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.0/farmhub_Darwin_arm64.tar.gz"
-      sha256 "5e2e40583cf2d83d895097327de76d23d45c0965520b7244d1fb1b538fdf6bf3"
+      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.2/farmhub_Darwin_arm64.tar.gz"
+      sha256 "7af8ef592ec3aece837add2edb0c31d658fafcf209cfec7350457b39d149948c"
 
       def install
         bin.install "farmhub"
@@ -28,16 +28,16 @@ class Farmhub < Formula
 
   on_linux do
     if Hardware::CPU.intel?
-      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.0/farmhub_Linux_x86_64.tar.gz"
-      sha256 "0d9011de5252c9fa56f4ce49dbbb7f9c2b629100de1a1661afd3bc70cb196910"
+      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.2/farmhub_Linux_x86_64.tar.gz"
+      sha256 "35f5d41f1bd3b68598f92b5694ffc9372af156a53d3605b52fcfbe170e064fd7"
 
       def install
         bin.install "farmhub"
       end
     end
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.0/farmhub_Linux_arm64.tar.gz"
-      sha256 "18718809862e2b5219253866b243ad7c0882e1b26f3283e756117169d73cdeba"
+      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.2/farmhub_Linux_arm64.tar.gz"
+      sha256 "47df14b4ebea5d863ef71bb70f8c513177c6db130b3f0ec1af60eda02c1771e9"
 
       def install
         bin.install "farmhub"
