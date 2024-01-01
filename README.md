@@ -24,7 +24,7 @@ farmhub generate -o sketch.ino
 
 ### Putting code on your device
 
-You've probably generated the code on your [dashboard](https://my.farmhub.ag) for your Aquaponics or Hydroponics kit from Atlas Scientific and need to put it on the device.  Simply download that file from your dashboard and run the following commands:
+Once you have the code from the previous command you can run this command to put it on the device.
 
 ```
 farmhub flash <pathtosketch>
