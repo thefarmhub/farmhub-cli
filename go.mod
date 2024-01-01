@@ -8,7 +8,7 @@ require (
 	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/matryer/is v1.4.0 // indirect
-	github.com/mitchellh/go-homedir v1.1.0 // indirect
+	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/sirupsen/logrus v1.9.3
@@ -30,7 +30,7 @@ require (
 	github.com/cmaglie/pb v1.0.27
 	github.com/machinebox/graphql v0.2.2
 	github.com/manifoldco/promptui v0.9.0
-	github.com/pterm/pterm v0.12.72
+	github.com/pterm/pterm v0.12.73
 	github.com/stretchr/testify v1.8.4
 	go.bug.st/cleanup v1.0.0
 	go.bug.st/serial v1.6.1
