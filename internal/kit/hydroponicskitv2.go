@@ -3,15 +3,18 @@ package kit
 import (
 	"bytes"
 	"context"
-	"io"
-	"net/http"
 	"text/template"
+
+	_ "embed"
 
 	"github.com/arduino/arduino-cli/configuration"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	"github.com/thefarmhub/farmhub-cli/internal/arduino"
 	"github.com/thefarmhub/farmhub-cli/internal/model"
 )
+
+//go:embed templates/hydroponicskitv2.ino
+var hydroponicsKitV2Template string
 
 type HydroponicsKitV2 struct {
 	arduino *arduino.Arduino
@@ -87,20 +90,7 @@ func (e *HydroponicsKitV2) Monitor(ctx context.Context) error {
 }
 
 func (e *HydroponicsKitV2) GenerateCode(sensor *model.Sensor) (string, error) {
-	url := "https://raw.githubusercontent.com/thefarmhub/hardware-starter-kits/main/scientific-atlas/v2/hydroponics-kit/hydroponics-kit.ino"
-
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-
-	content, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-
-	tmpl, err := template.New("code").Parse(string(content))
+	tmpl, err := template.New("code").Parse(hydroponicsKitV2Template)
 	if err != nil {
 		return "", err
 	}

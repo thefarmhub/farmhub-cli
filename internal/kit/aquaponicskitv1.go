@@ -3,15 +3,19 @@ package kit
 import (
 	"bytes"
 	"context"
-	"io"
-	"net/http"
+	"fmt"
 	"text/template"
+
+	_ "embed"
 
 	"github.com/arduino/arduino-cli/configuration"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	"github.com/thefarmhub/farmhub-cli/internal/arduino"
 	"github.com/thefarmhub/farmhub-cli/internal/model"
 )
+
+//go:embed templates/aquaponicskitv1.ino
+var aquaponicsKitV1Template string
 
 type AquaponicsKitV1 struct {
 	arduino *arduino.Arduino
@@ -83,20 +87,8 @@ func (e *AquaponicsKitV1) SetPath(path string) error {
 }
 
 func (e *AquaponicsKitV1) GenerateCode(sensor *model.Sensor) (string, error) {
-	url := "https://raw.githubusercontent.com/thefarmhub/hardware-starter-kits/main/scientific-atlas/v2/aquaponics-kit/aquaponics-kit.ino"
-
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-
-	content, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-
-	tmpl, err := template.New("code").Parse(string(content))
+	fmt.Println(aquaponicsKitV1Template)
+	tmpl, err := template.New("code").Parse(aquaponicsKitV1Template)
 	if err != nil {
 		return "", err
 	}
