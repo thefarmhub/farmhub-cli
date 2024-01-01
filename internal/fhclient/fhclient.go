@@ -167,14 +167,14 @@ func (c *Client) GetSensorsByProjectID(ctx context.Context, projectId string) ([
 }
 
 // CreateSensor creates a new sensor with the provided details.
-func (c *Client) CreateSensor(ctx context.Context, projectId, name, description string) (model.Sensor, error) {
+func (c *Client) CreateSensor(ctx context.Context, projectId, name string) (model.Sensor, error) {
 	if projectId == "" || name == "" {
 		return model.Sensor{}, errors.New("project ID and name are required")
 	}
 
 	req := graphql.NewRequest(`
-		mutation CreateSensor($projectId: ID!, $name: String!, $description: String) {
-			sensorCreate(projectId: $projectId, input: { name: $name, description: $description }) {
+		mutation CreateSensor($projectId: ID!, $name: String!) {
+			sensorCreate(projectId: $projectId, input: { name: $name }) {
 				id
 				name
 				description
@@ -190,7 +190,6 @@ func (c *Client) CreateSensor(ctx context.Context, projectId, name, description 
 
 	req.Var("projectId", projectId)
 	req.Var("name", name)
-	req.Var("description", description)
 
 	// Set the Authorization header
 	req.Header.Set("Authorization", "Bearer "+c.token)

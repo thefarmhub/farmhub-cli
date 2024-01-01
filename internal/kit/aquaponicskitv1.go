@@ -37,6 +37,10 @@ func NewAquaponicsKitV1() Kit {
 	}
 }
 
+func (e *AquaponicsKitV1) Name() string {
+	return "Aquaponics Kit"
+}
+
 func (e *AquaponicsKitV1) SetPort(port string) {
 	e.port = port
 }
@@ -136,5 +140,5 @@ func (e *AquaponicsKitV1) Monitor(ctx context.Context) error {
 }
 
 func init() {
-	availableKits["aquaponics-kit-v1"] = NewAquaponicsKitV1
+	availableKits["Aquaponics Kit"] = NewAquaponicsKitV1
 }

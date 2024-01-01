@@ -37,6 +37,10 @@ func NewHydroponicsKitV2() Kit {
 	}
 }
 
+func (e *HydroponicsKitV2) Name() string {
+	return "Hydroponics Kit"
+}
+
 func (e *HydroponicsKitV2) SetPort(port string) {
 	e.port = port
 }
@@ -133,5 +137,5 @@ func (e *HydroponicsKitV2) GenerateCode(project *model.Project, sensor *model.Se
 }
 
 func init() {
-	availableKits["hydroponics-kit-v2"] = NewHydroponicsKitV2
+	availableKits["Hydroponics Kit"] = NewHydroponicsKitV2
 }

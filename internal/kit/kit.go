@@ -9,6 +9,9 @@ import (
 const IotEndpoint = "iot.farmhub.ag"
 
 type Kit interface {
+	// The name of the kit, used to create one if doesnt exist
+	Name() string
+
 	// SetPort specifies where it should be operating when flashing and monitoring
 	SetPort(port string)
 

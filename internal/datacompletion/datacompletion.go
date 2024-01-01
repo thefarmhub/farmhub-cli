@@ -67,7 +67,7 @@ func (c *Completer) selectLog(name, metric string) (string, error) {
 	}
 
 	msg := fmt.Sprintf("Notebook not found for %s. Do you want to create a new log?", name)
-	createLog, _ := pterm.DefaultInteractiveConfirm.Show(msg)
+	createLog, _ := pterm.DefaultInteractiveConfirm.WithDefaultValue(true).Show(msg)
 	if !createLog {
 		return "", errors.New("log creation declined")
 	}
