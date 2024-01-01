@@ -1,8 +1,17 @@
 package kit
 
-import "context"
+import (
+	"context"
+
+	"github.com/thefarmhub/farmhub-cli/internal/model"
+)
+
+const IotEndpoint = "iot.farmhub.ag"
 
 type Kit interface {
+	// The name of the kit, used to create one if doesnt exist
+	Name() string
+
 	// SetPort specifies where it should be operating when flashing and monitoring
 	SetPort(port string)
 
@@ -14,6 +23,9 @@ type Kit interface {
 
 	// Upload flashes the sketch to the specified port
 	Upload() error
+
+	// GenerateCode generates the code necessary for this kit
+	GenerateCode(project *model.Project, sensor *model.Sensor) (string, error)
 
 	// Monitor starts monitoring the specified port
 	Monitor(ctx context.Context) error

@@ -1,12 +1,22 @@
 package kit
 
 import (
+	"bytes"
 	"context"
+	"strings"
+	"text/template"
+
+	_ "embed"
 
 	"github.com/arduino/arduino-cli/configuration"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	"github.com/thefarmhub/farmhub-cli/internal/arduino"
+	"github.com/thefarmhub/farmhub-cli/internal/datacompletion"
+	"github.com/thefarmhub/farmhub-cli/internal/model"
 )
+
+//go:embed templates/aquaponicskitv1.ino
+var aquaponicsKitV1Template string
 
 type AquaponicsKitV1 struct {
 	arduino *arduino.Arduino
@@ -25,6 +35,10 @@ func NewAquaponicsKitV1() Kit {
 	return &AquaponicsKitV1{
 		arduino: a,
 	}
+}
+
+func (e *AquaponicsKitV1) Name() string {
+	return "Aquaponics Kit"
 }
 
 func (e *AquaponicsKitV1) SetPort(port string) {
@@ -77,10 +91,54 @@ func (e *AquaponicsKitV1) SetPath(path string) error {
 	return nil
 }
 
+func (e *AquaponicsKitV1) GenerateCode(project *model.Project, sensor *model.Sensor) (string, error) {
+	tmpl, err := template.New("code").Funcs(template.FuncMap{
+		"trim": strings.TrimSpace,
+	}).Parse(aquaponicsKitV1Template)
+	if err != nil {
+		return "", err
+	}
+
+	type ConfigVariables struct {
+		WiFiSSID                 string `datatype:"ssid"`
+		WiFiPassword             string `datatype:"password"`
+		TopicPH                  string `datatype:"topic" metric:"PH" name:"pH"`
+		TopicEC                  string `datatype:"topic" metric:"ELECTRICAL_CONDUCTIVITY" name:"Electrical Conductivity"`
+		TopicDO                  string `datatype:"topic" metric:"DISSOLVED_OXYGEN" name:"Dissolved Oxygen"`
+		TopicTEMP                string `datatype:"topic" metric:"WATER_TEMPERATURE" name:"Water Temperature"`
+		TopicHUM                 string `datatype:"topic" metric:"INDOOR_RELATIVE_HUMIDITY" name:"Humidity"`
+		TopicCO2                 string `datatype:"topic" metric:"CARBON_DIOXIDE" name:"CO2"`
+		ThingName                string
+		CertificatePEM           string
+		CertificatePrivateKey    string
+		RootCertificateAuthority string
+		IotEndpoint              string
+	}
+
+	vars := ConfigVariables{
+		IotEndpoint:              IotEndpoint,
+		CertificatePEM:           sensor.IoTCertificatePem,
+		CertificatePrivateKey:    sensor.IoTCertificatePrivateKey,
+		RootCertificateAuthority: sensor.IoTRootCertificateAuthority,
+		ThingName:                sensor.IoTThingName,
+	}
+
+	completer := datacompletion.NewCompleter(project, sensor)
+	completer.Complete(&vars)
+
+	var tpl bytes.Buffer
+	err = tmpl.Execute(&tpl, vars)
+	if err != nil {
+		return "", err
+	}
+
+	return tpl.String(), nil
+}
+
 func (e *AquaponicsKitV1) Monitor(ctx context.Context) error {
 	return e.arduino.Monitor(ctx, e.port)
 }
 
 func init() {
-	availableKits["aquaponics-kit-v1"] = NewAquaponicsKitV1
+	availableKits["Aquaponics Kit"] = NewAquaponicsKitV1
 }

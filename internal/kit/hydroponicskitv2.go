@@ -1,12 +1,22 @@
 package kit
 
 import (
+	"bytes"
 	"context"
+	"strings"
+	"text/template"
+
+	_ "embed"
 
 	"github.com/arduino/arduino-cli/configuration"
 	rpc "github.com/arduino/arduino-cli/rpc/cc/arduino/cli/commands/v1"
 	"github.com/thefarmhub/farmhub-cli/internal/arduino"
+	"github.com/thefarmhub/farmhub-cli/internal/datacompletion"
+	"github.com/thefarmhub/farmhub-cli/internal/model"
 )
+
+//go:embed templates/hydroponicskitv2.ino
+var hydroponicsKitV2Template string
 
 type HydroponicsKitV2 struct {
 	arduino *arduino.Arduino
@@ -25,6 +35,10 @@ func NewHydroponicsKitV2() Kit {
 	return &HydroponicsKitV2{
 		arduino: a,
 	}
+}
+
+func (e *HydroponicsKitV2) Name() string {
+	return "Hydroponics Kit"
 }
 
 func (e *HydroponicsKitV2) SetPort(port string) {
@@ -81,6 +95,47 @@ func (e *HydroponicsKitV2) Monitor(ctx context.Context) error {
 	return e.arduino.Monitor(ctx, e.port)
 }
 
+func (e *HydroponicsKitV2) GenerateCode(project *model.Project, sensor *model.Sensor) (string, error) {
+	tmpl, err := template.New("code").Funcs(template.FuncMap{
+		"trim": strings.TrimSpace,
+	}).Parse(hydroponicsKitV2Template)
+	if err != nil {
+		return "", err
+	}
+
+	type ConfigVariables struct {
+		WiFiSSID                 string `datatype:"ssid"`
+		WiFiPassword             string `datatype:"password"`
+		TopicPH                  string `datatype:"topic" metric:"PH" name:"pH"`
+		TopicEC                  string `datatype:"topic" metric:"ELECTRICAL_CONDUCTIVITY" name:"Electrical Conductivity"`
+		TopicTEMP                string `datatype:"topic" metric:"WATER_TEMPERATURE" name:"Water Temperature"`
+		ThingName                string
+		CertificatePEM           string
+		CertificatePrivateKey    string
+		RootCertificateAuthority string
+		IotEndpoint              string
+	}
+
+	vars := ConfigVariables{
+		IotEndpoint:              IotEndpoint,
+		CertificatePEM:           sensor.IoTCertificatePem,
+		CertificatePrivateKey:    sensor.IoTCertificatePrivateKey,
+		RootCertificateAuthority: sensor.IoTRootCertificateAuthority,
+		ThingName:                sensor.IoTThingName,
+	}
+
+	completer := datacompletion.NewCompleter(project, sensor)
+	completer.Complete(&vars)
+
+	var tpl bytes.Buffer
+	err = tmpl.Execute(&tpl, vars)
+	if err != nil {
+		return "", err
+	}
+
+	return tpl.String(), nil
+}
+
 func init() {
-	availableKits["hydroponics-kit-v2"] = NewHydroponicsKitV2
+	availableKits["Hydroponics Kit"] = NewHydroponicsKitV2
 }
