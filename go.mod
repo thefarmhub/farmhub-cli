@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/fatih/color v1.15.0 // indirect
-	github.com/google/go-github/v28 v28.1.1
+	github.com/google/go-github/v57 v57.0.0
 	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/matryer/is v1.4.0 // indirect
@@ -28,6 +28,7 @@ require (
 	github.com/arduino/arduino-cli v0.35.0-rc.8
 	github.com/arduino/go-paths-helper v1.11.0
 	github.com/cmaglie/pb v1.0.27
+	github.com/google/go-github/v28 v28.1.1
 	github.com/machinebox/graphql v0.2.2
 	github.com/manifoldco/promptui v0.9.0
 	github.com/pterm/pterm v0.12.72
