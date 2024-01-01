@@ -145,8 +145,8 @@ github.com/emirpasic/gods/utils
 # github.com/fatih/color v1.15.0
 ## explicit; go 1.17
 github.com/fatih/color
-# github.com/fsnotify/fsnotify v1.6.0
-## explicit; go 1.16
+# github.com/fsnotify/fsnotify v1.7.0
+## explicit; go 1.17
 github.com/fsnotify/fsnotify
 # github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376
 ## explicit; go 1.13
@@ -338,7 +338,7 @@ github.com/pterm/pterm/internal
 # github.com/rivo/uniseg v0.4.4
 ## explicit; go 1.18
 github.com/rivo/uniseg
-# github.com/sagikazarmark/locafero v0.3.0
+# github.com/sagikazarmark/locafero v0.4.0
 ## explicit; go 1.20
 github.com/sagikazarmark/locafero
 # github.com/sagikazarmark/slog-shim v0.1.0
@@ -364,8 +364,8 @@ github.com/sourcegraph/conc/panics
 github.com/spf13/afero
 github.com/spf13/afero/internal/common
 github.com/spf13/afero/mem
-# github.com/spf13/cast v1.5.1
-## explicit; go 1.18
+# github.com/spf13/cast v1.6.0
+## explicit; go 1.19
 github.com/spf13/cast
 # github.com/spf13/cobra v1.8.0
 ## explicit; go 1.15
@@ -373,7 +373,7 @@ github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
 ## explicit; go 1.12
 github.com/spf13/pflag
-# github.com/spf13/viper v1.17.0
+# github.com/spf13/viper v1.18.2
 ## explicit; go 1.18
 github.com/spf13/viper
 github.com/spf13/viper/internal/encoding
@@ -384,6 +384,7 @@ github.com/spf13/viper/internal/encoding/javaproperties
 github.com/spf13/viper/internal/encoding/json
 github.com/spf13/viper/internal/encoding/toml
 github.com/spf13/viper/internal/encoding/yaml
+github.com/spf13/viper/internal/features
 # github.com/stretchr/testify v1.8.4
 ## explicit; go 1.20
 github.com/stretchr/testify/assert
