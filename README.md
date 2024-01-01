@@ -8,15 +8,24 @@ Handling your IoT devices and data with ease.
 
 ## Getting Started
 
+### Generating the code for your device
+
+Once you have a project on your FarmHub dashboard, just run this command to walk through a sensor setup process with code generation
+
+```
+farmhub generate -o sketch.ino
+```
+
 ### Putting code on your device
 
 You've probably generated the code on your [dashboard](https://my.farmhub.ag) for your Aquaponics or Hydroponics kit from Atlas Scientific and need to put it on the device.  Simply download that file from your dashboard and run the following commands:
 
 ```
-farmhub flash <path_to_downloaded>/sketch.ino
-```
+farmhub flash <pathtosketch>
 
-It will walk you through the rest.
+# Example if you used the above generate command
+farmhub flash sketch.ino
+```
 
 ### Calibrating a device
 
