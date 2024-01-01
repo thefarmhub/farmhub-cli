@@ -8,6 +8,12 @@ Handling your IoT devices and data with ease.
 
 ## Getting Started
 
+### Login to your FarmHub account
+
+```
+farmhub login
+```
+
 ### Generating the code for your device
 
 Once you have a project on your FarmHub dashboard, just run this command to walk through a sensor setup process with code generation
