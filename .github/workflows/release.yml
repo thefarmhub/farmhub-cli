@@ -32,7 +32,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Latest Tags
-        run: git pull --tags
+        run: |
+          git pull
+          git pull --tags
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
