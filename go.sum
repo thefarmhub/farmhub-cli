@@ -69,6 +69,8 @@ github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239 h1:kFOfPq6dUM1hTo
 github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239/go.mod h1:2FmKhYUyUczH0OGQWaF5ceTx0UBShxjsH6f8oGKYe2c=
 github.com/arduino/arduino-cli v0.35.0-rc.8 h1:+RBVa8A1WZK5wZEd7JAvmI4LFyQqRQbn0KwbWk5BVJ8=
 github.com/arduino/arduino-cli v0.35.0-rc.8/go.mod h1:9aoXZdVGQ9uwf2M1nCSB+T051KbldslMFiJaHVycVsg=
+github.com/arduino/arduino-cli v0.35.0 h1:tkSpGun1hMgJPkvZJjofejWD+ivhCpvsl49H4n81iSc=
+github.com/arduino/arduino-cli v0.35.0/go.mod h1:9aoXZdVGQ9uwf2M1nCSB+T051KbldslMFiJaHVycVsg=
 github.com/arduino/go-paths-helper v1.0.1/go.mod h1:HpxtKph+g238EJHq4geEPv9p+gl3v5YYu35Yb+w31Ck=
 github.com/arduino/go-paths-helper v1.11.0 h1:hkpGb9AtCTByTj2FKutuHWb3klDf4kAKL10hW+fN+oE=
 github.com/arduino/go-paths-helper v1.11.0/go.mod h1:jcpW4wr0u69GlXhTYydsdsqAjLaYK5n7oWHfKqOG6LM=
