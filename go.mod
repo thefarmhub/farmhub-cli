@@ -18,8 +18,8 @@ require (
 	github.com/stripe/stripe-cli v1.19.1
 	golang.org/x/crypto v0.16.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
-	golang.org/x/sys v0.15.0 // indirect
-	golang.org/x/term v0.15.0
+	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/term v0.16.0
 	golang.org/x/text v0.14.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 )
@@ -31,7 +31,7 @@ require (
 	github.com/google/go-github/v28 v28.1.1
 	github.com/machinebox/graphql v0.2.2
 	github.com/manifoldco/promptui v0.9.0
-	github.com/pterm/pterm v0.12.74
+	github.com/pterm/pterm v0.12.75
 	github.com/stretchr/testify v1.8.4
 	go.bug.st/cleanup v1.0.0
 	go.bug.st/serial v1.6.1
