@@ -333,7 +333,7 @@ github.com/pkg/errors
 # github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 ## explicit
 github.com/pmezard/go-difflib/difflib
-# github.com/pterm/pterm v0.12.75
+# github.com/pterm/pterm v0.12.76
 ## explicit; go 1.21
 github.com/pterm/pterm
 github.com/pterm/pterm/internal
