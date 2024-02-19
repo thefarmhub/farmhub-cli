@@ -420,7 +420,7 @@ go.bug.st/downloader/v2
 # go.bug.st/relaxed-semver v0.11.0
 ## explicit; go 1.17
 go.bug.st/relaxed-semver
-# go.bug.st/serial v1.6.1
+# go.bug.st/serial v1.6.2
 ## explicit; go 1.17
 go.bug.st/serial
 go.bug.st/serial/unixutils
