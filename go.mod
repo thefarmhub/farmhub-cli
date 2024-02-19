@@ -34,7 +34,7 @@ require (
 	github.com/pterm/pterm v0.12.79
 	github.com/stretchr/testify v1.8.4
 	go.bug.st/cleanup v1.0.0
-	go.bug.st/serial v1.6.1
+	go.bug.st/serial v1.6.2
 	gopkg.in/yaml.v3 v3.0.1
 )
 
