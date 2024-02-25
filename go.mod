@@ -29,6 +29,7 @@ require (
 	github.com/arduino/go-paths-helper v1.11.0
 	github.com/cmaglie/pb v1.0.27
 	github.com/google/go-github/v28 v28.1.1
+	github.com/google/go-github/v59 v59.0.0
 	github.com/machinebox/graphql v0.2.2
 	github.com/manifoldco/promptui v0.9.0
 	github.com/pterm/pterm v0.12.79
