@@ -75,6 +75,8 @@ github.com/arduino/arduino-cli v0.35.1 h1:sVS8yvRV9odQbRLJr4wOtHKy75LKi/cJny1Kth
 github.com/arduino/arduino-cli v0.35.1/go.mod h1:9aoXZdVGQ9uwf2M1nCSB+T051KbldslMFiJaHVycVsg=
 github.com/arduino/arduino-cli v0.35.2 h1:XvAOnAZWlEnHc9b9pLFWjfP8ozBMnus14Xgu9wR/aiY=
 github.com/arduino/arduino-cli v0.35.2/go.mod h1:9aoXZdVGQ9uwf2M1nCSB+T051KbldslMFiJaHVycVsg=
+github.com/arduino/arduino-cli v0.35.3 h1:9zQM233QJQDerCv82pvgbAcxmFREkZjfHbfCiWgTCck=
+github.com/arduino/arduino-cli v0.35.3/go.mod h1:9aoXZdVGQ9uwf2M1nCSB+T051KbldslMFiJaHVycVsg=
 github.com/arduino/go-paths-helper v1.0.1/go.mod h1:HpxtKph+g238EJHq4geEPv9p+gl3v5YYu35Yb+w31Ck=
 github.com/arduino/go-paths-helper v1.11.0 h1:hkpGb9AtCTByTj2FKutuHWb3klDf4kAKL10hW+fN+oE=
 github.com/arduino/go-paths-helper v1.11.0/go.mod h1:jcpW4wr0u69GlXhTYydsdsqAjLaYK5n7oWHfKqOG6LM=
