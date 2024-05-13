@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/fatih/color v1.15.0 // indirect
-	github.com/google/go-github/v57 v57.0.0
+	github.com/google/go-github/v62 v62.0.0
 	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/matryer/is v1.4.0 // indirect
