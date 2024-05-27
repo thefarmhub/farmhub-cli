@@ -5,20 +5,20 @@
 class Farmhub < Formula
   desc ""
   homepage "https://farmhub.ag"
-  version "1.5.19"
+  version "1.5.20"
 
   on_macos do
-    if Hardware::CPU.intel?
-      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.19/farmhub_Darwin_x86_64.tar.gz"
-      sha256 "cf68a7eb672a5c16edce4525f7f705b7a17508c2cad31500a5d5754736a83ea0"
+    on_intel do
+      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.20/farmhub_Darwin_x86_64.tar.gz"
+      sha256 "4ad66c64941af0f6034ae81a73ac8661aa68a09157910e475d8a355e60c7c332"
 
       def install
         bin.install "farmhub"
       end
     end
-    if Hardware::CPU.arm?
-      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.19/farmhub_Darwin_arm64.tar.gz"
-      sha256 "30d313bc5aa18d73cb19d77d6bd728ed87fa9126950db6eb312985b0622daf8b"
+    on_arm do
+      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.20/farmhub_Darwin_arm64.tar.gz"
+      sha256 "464f051650bd9191842d6cc4352325ce98f8777aa573999a2b9d2c3bf36a8ce6"
 
       def install
         bin.install "farmhub"
@@ -27,20 +27,24 @@ class Farmhub < Formula
   end
 
   on_linux do
-    if Hardware::CPU.intel?
-      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.19/farmhub_Linux_x86_64.tar.gz"
-      sha256 "1baafbc5417dd7b69a558413d4b06d348e5f7cc666db37743dc386c3b17c312d"
+    on_intel do
+      if Hardware::CPU.is_64_bit?
+        url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.20/farmhub_Linux_x86_64.tar.gz"
+        sha256 "01b35aa0ac5d06826a37ddbfe8cac7574574962f68378627f832da877b44aad5"
 
-      def install
-        bin.install "farmhub"
+        def install
+          bin.install "farmhub"
+        end
       end
     end
-    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.19/farmhub_Linux_arm64.tar.gz"
-      sha256 "75e61bab4565141a83aca90402f00ee5c012ee7d22cabad8f1354afa44d9d7bc"
+    on_arm do
+      if Hardware::CPU.is_64_bit?
+        url "https://github.com/thefarmhub/farmhub-cli/releases/download/v1.5.20/farmhub_Linux_arm64.tar.gz"
+        sha256 "d1e3b12ca468b84a52196de04be27ff0b4e0d72d6ba2aa4a0bd1f1f39f4783f6"
 
-      def install
-        bin.install "farmhub"
+        def install
+          bin.install "farmhub"
+        end
       end
     end
   end
