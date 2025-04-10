@@ -55,7 +55,8 @@ func NewProcess(extraEnv []string, args ...string) (*Process, error) {
 		cmd: exec.Command(args[0], args[1:]...),
 	}
 	p.cmd.Env = append(os.Environ(), extraEnv...)
-	p.TellCommandNotToSpawnShell()
+	tellCommandNotToSpawnShell(p.cmd)          // windows specific
+	tellCommandToStartOnNewProcessGroup(p.cmd) // linux specific
 
 	// This is required because some tools detects if the program is running
 	// from terminal by looking at the stdin/out bindings.
@@ -137,6 +138,21 @@ func (p *Process) Wait() error {
 	return p.cmd.Wait()
 }
 
+// WaitWithinContext wait for the process to complete. If the given context is canceled
+// before the normal process termination, the process is killed.
+func (p *Process) WaitWithinContext(ctx context.Context) error {
+	completed := make(chan struct{})
+	defer close(completed)
+	go func() {
+		select {
+		case <-ctx.Done():
+			p.Kill()
+		case <-completed:
+		}
+	}()
+	return p.Wait()
+}
+
 // Signal sends a signal to the Process. Sending Interrupt on Windows is not implemented.
 func (p *Process) Signal(sig os.Signal) error {
 	return p.cmd.Process.Signal(sig)
@@ -146,7 +162,7 @@ func (p *Process) Signal(sig os.Signal) error {
 // actually exited. This only kills the Process itself, not any other processes it may
 // have started.
 func (p *Process) Kill() error {
-	return p.cmd.Process.Kill()
+	return kill(p.cmd)
 }
 
 // SetDir sets the working directory of the command. If Dir is the empty string, Run
@@ -187,16 +203,7 @@ func (p *Process) RunWithinContext(ctx context.Context) error {
 	if err := p.Start(); err != nil {
 		return err
 	}
-	completed := make(chan struct{})
-	defer close(completed)
-	go func() {
-		select {
-		case <-ctx.Done():
-			p.Kill()
-		case <-completed:
-		}
-	}()
-	return p.Wait()
+	return p.WaitWithinContext(ctx)
 }
 
 // RunAndCaptureOutput starts the specified command and waits for it to complete. If the given context
