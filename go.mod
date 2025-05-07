@@ -1,6 +1,8 @@
 module github.com/thefarmhub/farmhub-cli
 
-go 1.21
+go 1.23.0
+
+toolchain go1.24.3
 
 require (
 	github.com/fatih/color v1.15.0 // indirect
@@ -18,7 +20,7 @@ require (
 	github.com/stripe/stripe-cli v1.19.5
 	golang.org/x/crypto v0.23.0 // indirect
 	golang.org/x/net v0.25.0 // indirect
-	golang.org/x/sys v0.27.0 // indirect
+	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/term v0.26.0
 	golang.org/x/text v0.20.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
@@ -26,7 +28,7 @@ require (
 
 require (
 	github.com/arduino/arduino-cli v0.35.3
-	github.com/arduino/go-paths-helper v1.11.0
+	github.com/arduino/go-paths-helper v1.13.1
 	github.com/cmaglie/pb v1.0.27
 	github.com/google/go-github/v28 v28.1.1
 	github.com/machinebox/graphql v0.2.2

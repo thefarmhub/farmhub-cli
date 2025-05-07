@@ -80,6 +80,8 @@ github.com/arduino/arduino-cli v0.35.3/go.mod h1:9aoXZdVGQ9uwf2M1nCSB+T051Kbldsl
 github.com/arduino/go-paths-helper v1.0.1/go.mod h1:HpxtKph+g238EJHq4geEPv9p+gl3v5YYu35Yb+w31Ck=
 github.com/arduino/go-paths-helper v1.11.0 h1:hkpGb9AtCTByTj2FKutuHWb3klDf4kAKL10hW+fN+oE=
 github.com/arduino/go-paths-helper v1.11.0/go.mod h1:jcpW4wr0u69GlXhTYydsdsqAjLaYK5n7oWHfKqOG6LM=
+github.com/arduino/go-paths-helper v1.13.1 h1:M7SCdLB2VldxOdChnjZkxAZwWZdDtNY4IlHL9nxGQFo=
+github.com/arduino/go-paths-helper v1.13.1/go.mod h1:dDodKn2ZX4iwuoBMapdDO+5d0oDLBeM4BS0xS4i40Ak=
 github.com/arduino/go-properties-orderedmap v1.8.0 h1:wEfa6hHdpezrVOh787OmClsf/Kd8qB+zE3P2Xbrn0CQ=
 github.com/arduino/go-properties-orderedmap v1.8.0/go.mod h1:DKjD2VXY/NZmlingh4lSFMEYCVubfeArCsGPGDwb2yk=
 github.com/arduino/go-timeutils v0.0.0-20171220113728-d1dd9e313b1b h1:9hDi4F2st6dbLC3y4i02zFT5quS4X6iioWifGlVwfy4=
@@ -653,6 +655,8 @@ golang.org/x/sys v0.18.0 h1:DBdB3niSjOA/O0blCZBqDefyWNYveAYMNF1Wum0DYQ4=
 golang.org/x/sys v0.18.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
 golang.org/x/sys v0.27.0 h1:wBqf8DvsY9Y/2P8gAfPDEYNuS30J4lPHJxXSb/nJZ+s=
 golang.org/x/sys v0.27.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
+golang.org/x/sys v0.32.0 h1:s77OFDvIQeibCmezSnk/q6iAfkdiQaJi4VzroCFrN20=
+golang.org/x/sys v0.32.0/go.mod h1:BJP2sWEmIv4KK5OTEluFJCKSidICx8ciO85XgH3Ak8k=
 golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
 golang.org/x/term v0.0.0-20210220032956-6a3ed077a48d/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
 golang.org/x/term v0.0.0-20210615171337-6886f2dfbf5b/go.mod h1:jbD1KX2456YbFQfuXm/mYQcufACuNUgVhRMnK/tPxf8=
