@@ -32,7 +32,7 @@ package paths
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -70,8 +70,16 @@ func NewFromFile(file *os.File) *Path {
 // Stat returns a FileInfo describing the named file. The result is
 // cached internally for next queries. To ensure that the cached
 // FileInfo entry is updated just call Stat again.
-func (p *Path) Stat() (os.FileInfo, error) {
+func (p *Path) Stat() (fs.FileInfo, error) {
 	return os.Stat(p.path)
+}
+
+// Lstat returns a FileInfo describing the named file. If the file is
+// a symbolic link, the returned FileInfo describes the symbolic link.
+// Lstat makes no attempt to follow the link. If there is an error, it
+// will be of type *PathError.
+func (p *Path) Lstat() (fs.FileInfo, error) {
+	return os.Lstat(p.path)
 }
 
 // Clone create a copy of the Path object
@@ -410,6 +418,13 @@ func (p *Path) CopyDirTo(dst *Path) error {
 	return nil
 }
 
+// Chmod changes the mode of the named file to mode. If the file is a
+// symbolic link, it changes the mode of the link's target. If there
+// is an error, it will be of type *os.PathError.
+func (p *Path) Chmod(mode fs.FileMode) error {
+	return os.Chmod(p.path, mode)
+}
+
 // Chtimes changes the access and modification times of the named file,
 // similar to the Unix utime() or utimes() functions.
 func (p *Path) Chtimes(atime, mtime time.Time) error {
@@ -418,14 +433,14 @@ func (p *Path) Chtimes(atime, mtime time.Time) error {
 
 // ReadFile reads the file named by filename and returns the contents
 func (p *Path) ReadFile() ([]byte, error) {
-	return ioutil.ReadFile(p.path)
+	return os.ReadFile(p.path)
 }
 
 // WriteFile writes data to a file named by filename. If the file
 // does not exist, WriteFile creates it otherwise WriteFile truncates
 // it before writing.
 func (p *Path) WriteFile(data []byte) error {
-	return ioutil.WriteFile(p.path, data, os.FileMode(0644))
+	return os.WriteFile(p.path, data, os.FileMode(0644))
 }
 
 // WriteToTempFile writes data to a newly generated temporary file.
