@@ -1,36 +1,31 @@
-/*
- * This file is part of PathsHelper library.
- *
- * Copyright 2018-2022 Arduino AG (http://www.arduino.cc/)
- *
- * PathsHelper library is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * As a special exception, you may use this file as part of a free software
- * library without restriction.  Specifically, if other files instantiate
- * templates or use macros or inline functions from this file, or you compile
- * this file and link it with other files to produce an executable, this
- * file does not by itself cause the resulting executable to be covered by
- * the GNU General Public License.  This exception does not however
- * invalidate any other reasons why the executable file might be covered by
- * the GNU General Public License.
- */
+// This file is part of PathsHelper library.
+//
+// Copyright 2018-2025 Arduino AG (http://www.arduino.cc/)
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//
+// You can be released from the requirements of the above licenses by purchasing
+// a commercial license. Buying such a license is mandatory if you want to
+// modify or otherwise use the software for commercial activities involving the
+// Arduino software without disclosing the source code of your own applications.
+// To purchase a commercial license, send an email to license@arduino.cc.
 
 package paths
 
 import (
-	"io/ioutil"
+	"errors"
+	"os"
 	"strings"
 )
 
@@ -41,7 +36,7 @@ type ReadDirFilter func(file *Path) bool
 // ReadDir returns a PathList containing the content of the directory
 // pointed by the current Path. The resulting list is filtered by the given filters chained.
 func (p *Path) ReadDir(filters ...ReadDirFilter) (PathList, error) {
-	infos, err := ioutil.ReadDir(p.path)
+	infos, err := os.ReadDir(p.path)
 	if err != nil {
 		return nil, err
 	}
@@ -69,27 +64,7 @@ func (p *Path) ReadDir(filters ...ReadDirFilter) (PathList, error) {
 // ReadDirRecursive returns a PathList containing the content of the directory
 // and its subdirectories pointed by the current Path
 func (p *Path) ReadDirRecursive() (PathList, error) {
-	infos, err := ioutil.ReadDir(p.path)
-	if err != nil {
-		return nil, err
-	}
-	paths := PathList{}
-	for _, info := range infos {
-		path := p.Join(info.Name())
-		paths.Add(path)
-
-		if isDir, err := path.IsDirCheck(); err != nil {
-			return nil, err
-		} else if isDir {
-			subPaths, err := path.ReadDirRecursive()
-			if err != nil {
-				return nil, err
-			}
-			paths.AddAll(subPaths)
-		}
-
-	}
-	return paths, nil
+	return p.ReadDirRecursiveFiltered(nil)
 }
 
 // ReadDirRecursiveFiltered returns a PathList containing the content of the directory
@@ -101,41 +76,53 @@ func (p *Path) ReadDirRecursive() (PathList, error) {
 //   - `filters` are the filters that are checked to determine if the entry should be
 //     added to the resulting PathList
 func (p *Path) ReadDirRecursiveFiltered(recursionFilter ReadDirFilter, filters ...ReadDirFilter) (PathList, error) {
-	infos, err := ioutil.ReadDir(p.path)
-	if err != nil {
-		return nil, err
-	}
+	var search func(*Path) (PathList, error)
 
-	accept := func(p *Path) bool {
-		for _, filter := range filters {
-			if !filter(p) {
-				return false
-			}
+	explored := map[string]bool{}
+	search = func(currPath *Path) (PathList, error) {
+		canonical := currPath.Canonical().path
+		if explored[canonical] {
+			return nil, errors.New("directories symlink loop detected")
 		}
-		return true
-	}
+		explored[canonical] = true
+		defer delete(explored, canonical)
 
-	paths := PathList{}
-	for _, info := range infos {
-		path := p.Join(info.Name())
-
-		if accept(path) {
-			paths.Add(path)
+		infos, err := os.ReadDir(currPath.path)
+		if err != nil {
+			return nil, err
 		}
 
-		if recursionFilter == nil || recursionFilter(path) {
-			if isDir, err := path.IsDirCheck(); err != nil {
-				return nil, err
-			} else if isDir {
-				subPaths, err := path.ReadDirRecursiveFiltered(recursionFilter, filters...)
-				if err != nil {
-					return nil, err
+		accept := func(p *Path) bool {
+			for _, filter := range filters {
+				if !filter(p) {
+					return false
 				}
-				paths.AddAll(subPaths)
+			}
+			return true
+		}
+
+		paths := PathList{}
+		for _, info := range infos {
+			path := currPath.Join(info.Name())
+
+			if accept(path) {
+				paths.Add(path)
+			}
+
+			if recursionFilter == nil || recursionFilter(path) {
+				if path.IsDir() {
+					subPaths, err := search(path)
+					if err != nil {
+						return nil, err
+					}
+					paths.AddAll(subPaths)
+				}
 			}
 		}
+		return paths, nil
 	}
-	return paths, nil
+
+	return search(p)
 }
 
 // FilterDirectories is a ReadDirFilter that accepts only directories
