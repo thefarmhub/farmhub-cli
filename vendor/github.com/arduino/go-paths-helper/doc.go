@@ -21,23 +21,8 @@
 // Arduino software without disclosing the source code of your own applications.
 // To purchase a commercial license, send an email to license@arduino.cc.
 
+// Paths is a library that provides a set of utilities to work with file paths in a platform-independent way.
+// It includes functions for creating temporary directories and files, handling null paths, and more.
+// It is designed to be used in Go applications that require file system operations without worrying about
+// platform-specific details.
 package paths
-
-import (
-	"encoding/json"
-)
-
-// MarshalJSON implements the json.Marshaler interface
-func (p *Path) MarshalJSON() ([]byte, error) {
-	return json.Marshal(p.path)
-}
-
-// UnmarshalJSON implements the json.Unmarshaler interface
-func (p *Path) UnmarshalJSON(b []byte) error {
-	var s string
-	if err := json.Unmarshal(b, &s); err != nil {
-		return err
-	}
-	(*p).path = s
-	return nil
-}

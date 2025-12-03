@@ -21,23 +21,38 @@
 // Arduino software without disclosing the source code of your own applications.
 // To purchase a commercial license, send an email to license@arduino.cc.
 
+//go:build !windows
+
 package paths
 
 import (
-	"encoding/json"
+	"os/exec"
+	"syscall"
 )
 
-// MarshalJSON implements the json.Marshaler interface
-func (p *Path) MarshalJSON() ([]byte, error) {
-	return json.Marshal(p.path)
+func tellCommandNotToSpawnShell(_ *exec.Cmd) {
+	// no op
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface
-func (p *Path) UnmarshalJSON(b []byte) error {
-	var s string
-	if err := json.Unmarshal(b, &s); err != nil {
+func tellCommandToStartOnNewProcessGroup(oscmd *exec.Cmd) {
+	// https://groups.google.com/g/golang-nuts/c/XoQ3RhFBJl8
+
+	// Start the process in a new process group.
+	// This is needed to kill the process and its children
+	// if we need to kill the process.
+	if oscmd.SysProcAttr == nil {
+		oscmd.SysProcAttr = &syscall.SysProcAttr{}
+	}
+	oscmd.SysProcAttr.Setpgid = true
+}
+
+func kill(oscmd *exec.Cmd) error {
+	// https://groups.google.com/g/golang-nuts/c/XoQ3RhFBJl8
+
+	// Kill the process group
+	pgid, err := syscall.Getpgid(oscmd.Process.Pid)
+	if err != nil {
 		return err
 	}
-	(*p).path = s
-	return nil
+	return syscall.Kill(-pgid, syscall.SIGKILL)
 }
