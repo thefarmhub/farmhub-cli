@@ -1,38 +1,32 @@
-/*
- * This file is part of PathsHelper library.
- *
- * Copyright 2018 Arduino AG (http://www.arduino.cc/)
- *
- * PathsHelper library is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * As a special exception, you may use this file as part of a free software
- * library without restriction.  Specifically, if other files instantiate
- * templates or use macros or inline functions from this file, or you compile
- * this file and link it with other files to produce an executable, this
- * file does not by itself cause the resulting executable to be covered by
- * the GNU General Public License.  This exception does not however
- * invalidate any other reasons why the executable file might be covered by
- * the GNU General Public License.
- */
+// This file is part of PathsHelper library.
+//
+// Copyright 2018-2025 Arduino AG (http://www.arduino.cc/)
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//
+// You can be released from the requirements of the above licenses by purchasing
+// a commercial license. Buying such a license is mandatory if you want to
+// modify or otherwise use the software for commercial activities involving the
+// Arduino software without disclosing the source code of your own applications.
+// To purchase a commercial license, send an email to license@arduino.cc.
 
 package paths
 
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -70,8 +64,16 @@ func NewFromFile(file *os.File) *Path {
 // Stat returns a FileInfo describing the named file. The result is
 // cached internally for next queries. To ensure that the cached
 // FileInfo entry is updated just call Stat again.
-func (p *Path) Stat() (os.FileInfo, error) {
+func (p *Path) Stat() (fs.FileInfo, error) {
 	return os.Stat(p.path)
+}
+
+// Lstat returns a FileInfo describing the named file. If the file is
+// a symbolic link, the returned FileInfo describes the symbolic link.
+// Lstat makes no attempt to follow the link. If there is an error, it
+// will be of type *PathError.
+func (p *Path) Lstat() (fs.FileInfo, error) {
+	return os.Lstat(p.path)
 }
 
 // Clone create a copy of the Path object
@@ -410,6 +412,13 @@ func (p *Path) CopyDirTo(dst *Path) error {
 	return nil
 }
 
+// Chmod changes the mode of the named file to mode. If the file is a
+// symbolic link, it changes the mode of the link's target. If there
+// is an error, it will be of type *os.PathError.
+func (p *Path) Chmod(mode fs.FileMode) error {
+	return os.Chmod(p.path, mode)
+}
+
 // Chtimes changes the access and modification times of the named file,
 // similar to the Unix utime() or utimes() functions.
 func (p *Path) Chtimes(atime, mtime time.Time) error {
@@ -418,14 +427,14 @@ func (p *Path) Chtimes(atime, mtime time.Time) error {
 
 // ReadFile reads the file named by filename and returns the contents
 func (p *Path) ReadFile() ([]byte, error) {
-	return ioutil.ReadFile(p.path)
+	return os.ReadFile(p.path)
 }
 
 // WriteFile writes data to a file named by filename. If the file
 // does not exist, WriteFile creates it otherwise WriteFile truncates
 // it before writing.
 func (p *Path) WriteFile(data []byte) error {
-	return ioutil.WriteFile(p.path, data, os.FileMode(0644))
+	return os.WriteFile(p.path, data, os.FileMode(0644))
 }
 
 // WriteToTempFile writes data to a newly generated temporary file.
