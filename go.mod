@@ -26,7 +26,7 @@ require (
 
 require (
 	github.com/arduino/arduino-cli v0.35.3
-	github.com/arduino/go-paths-helper v1.11.0
+	github.com/arduino/go-paths-helper v1.14.0
 	github.com/cmaglie/pb v1.0.27
 	github.com/google/go-github/v28 v28.1.1
 	github.com/machinebox/graphql v0.2.2
