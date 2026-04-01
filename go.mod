@@ -32,7 +32,7 @@ require (
 	github.com/machinebox/graphql v0.2.2
 	github.com/manifoldco/promptui v0.9.0
 	github.com/pterm/pterm v0.12.83
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.1
 	go.bug.st/cleanup v1.0.0
 	go.bug.st/serial v1.6.4
 	gopkg.in/yaml.v3 v3.0.1
