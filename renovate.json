@@ -1,10 +1,1 @@
-{
-  "extends": ["config:base", "schedule:earlyMondays"],
-  "baseBranches": ["main"],
-  "packageRules": [
-    {
-      "matchUpdateTypes": ["patch"],
-      "automerge": true
-    }
-  ]
-}
+{"enabled": false}
